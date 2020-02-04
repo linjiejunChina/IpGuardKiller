@@ -14,14 +14,14 @@ import java.util.List;
 /**
  * 遍历指定路径下的文件夹和文件。
  * 重点就两行。
- *         java.nio.file.Files.walkFileTree(PATH, finder);
- *          SimpleFileVisitor<Path> finder = new SimpleFileVisitor<Path>(){};
+ * java.nio.file.Files.walkFileTree(PATH, finder);
+ * SimpleFileVisitor<Path> finder = new SimpleFileVisitor<Path>(){};
  */
 public class FilesTraverse {
 
     public static Path PATH = Paths.get("D:\\ljj\\iproject\\IpguardKiller");
     public static Path prePath = Paths.get("D:\\ljj\\iproject");
-   static SocketChannel client;
+    static SocketChannel client;
 
     public static void main(String[] args) throws IOException {
 
@@ -44,22 +44,21 @@ public class FilesTraverse {
             public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
 
 
-
 //                StringBuffer sbf = new StringBuffer();
 //                for (int i = prePath.getNameCount(); i < file.getNameCount(); i++) {
 //                    sbf.append(file.getName(i).toString() + File.separator);
 //                }
 //                filesStrRelativePath.add(sbf.toString());
 
-                    File f = file.toFile();
+                File f = file.toFile();
 
-                InputStream is=new FileInputStream(f);
-                byte[] bytes = IOUtils.readNBytes(is,is.available());
+                InputStream is = new FileInputStream(f);
+                byte[] bytes = IOUtils.readNBytes(is, is.available());
 
 
-                    ByteBuffer buffer = ByteBuffer.wrap(bytes);
-                    client.write(buffer);
-                    buffer.clear();
+                ByteBuffer buffer = ByteBuffer.wrap(bytes);
+                client.write(buffer);
+                buffer.clear();
 
 
                 return super.visitFile(file, attrs);
