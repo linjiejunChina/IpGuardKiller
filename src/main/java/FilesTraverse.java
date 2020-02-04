@@ -20,9 +20,10 @@ public class FilesTraverse {
 
         final List<File> files = new ArrayList<File>();
         final List<File> diractory = new ArrayList<File>();
-        final List<String> dirsStrRelativePath = new ArrayList();
-        final List<String> filesStrRelativePath = new ArrayList();
+        final List<String> dirsStrRelativePath = new ArrayList();//文件夹相对路径
+        final List<String> filesStrRelativePath = new ArrayList();//文件相对路径
         SimpleFileVisitor<Path> finder = new SimpleFileVisitor<Path>() {
+
 
             @Override
             public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
@@ -58,7 +59,7 @@ public class FilesTraverse {
         //reigon dirToSend
         for (String s : dirsStrRelativePath) {
             String dirToSend = path + File.separator + s;
-            System.out.println(s);
+            System.err.println(s);
         }
         System.out.println("-----========---------=========");
         for (String s : filesStrRelativePath) {
