@@ -19,8 +19,8 @@ import java.util.List;
  */
 public class FilesTraverse {
 
-    public static Path PATH = Paths.get("/home/lin/iproject/IpGuardKiller");
-    public static Path prePath = Paths.get("/home/lin/iproject/");
+    public static Path PATH = Paths.get("D:\\ljj\\iproject\\IpguardKiller");
+    public static Path prePath = Paths.get("D:\\ljj\\iproject");
    static SocketChannel client;
 
     public static void main(String[] args) throws IOException {
