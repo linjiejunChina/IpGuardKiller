@@ -10,6 +10,8 @@ import java.nio.channels.SocketChannel;
 import java.util.*;
 
 public class SocketServerExample {
+
+    private final static String IPTOLISTEN = "192.168.31.223";
 	private Selector selector;
     private Map<SocketChannel,List<byte[]>> dataMapper;
     private InetSocketAddress listenAddress;
@@ -19,7 +21,7 @@ public class SocketServerExample {
 			@Override
 			public void run() {
 				 try {
-					new SocketServerExample("localhost", 8090).startServer();
+					new SocketServerExample(IPTOLISTEN, 8090).startServer();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -41,8 +43,9 @@ public class SocketServerExample {
 			}
 		};
        new Thread(server).start();
-       new Thread(client, "client-A").start();
-       new Thread(client, "client-B").start();
+//       new Thread(client, "client-A").start();
+//       new Thread(client, "client-B").start();
+
     }
 
     public SocketServerExample(String address, int port) throws IOException {
@@ -91,6 +94,7 @@ public class SocketServerExample {
 
     //accept a connection made to this channel's socket
     private void accept(SelectionKey key) throws IOException {
+//        System.out.println("key:"+key.channel().isBlocking());
         ServerSocketChannel serverChannel = (ServerSocketChannel) key.channel();
         SocketChannel channel = serverChannel.accept();
         channel.configureBlocking(false);
