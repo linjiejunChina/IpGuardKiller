@@ -13,8 +13,8 @@ import java.util.List;
  */
 public class FilesTraverse {
 
-    public static Path PATH = Paths.get("/Users/linjiejun/Documents/WeChat Files");
-    public static Path prePath = Paths.get("/Users/linjiejun/Documents");
+    public static Path PATH = Paths.get("/home/lin/iproject/IpGuardKiller");
+    public static Path prePath = Paths.get("/home/lin/iproject/");
 
     public static void main(String[] args) throws IOException {
 
@@ -23,8 +23,6 @@ public class FilesTraverse {
         final List<String> dirsStrRelativePath = new ArrayList();//文件夹相对路径
         final List<String> filesStrRelativePath = new ArrayList();//文件相对路径
         SimpleFileVisitor<Path> finder = new SimpleFileVisitor<Path>() {
-
-
             @Override
             public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
                 StringBuffer sbf = new StringBuffer();
@@ -37,6 +35,7 @@ public class FilesTraverse {
 
             @Override
             public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+
 
 
                 StringBuffer sbf = new StringBuffer();
