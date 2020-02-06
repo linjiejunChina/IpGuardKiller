@@ -51,7 +51,6 @@ public class FilesTraverse {
 //                filesStrRelativePath.add(sbf.toString());
 
                 File f = file.toFile();
-
                 InputStream is = new FileInputStream(f);
                 byte[] bytes = IOUtils.readNBytes(is, is.available());
 
