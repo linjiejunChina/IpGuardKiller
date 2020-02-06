@@ -22,6 +22,7 @@ public class FilesTraverse {
     public static Path PATH = Paths.get("D:\\ljj\\iproject\\IpguardKiller");
     public static Path prePath = Paths.get("D:\\ljj\\iproject");
     static SocketChannel client;
+    static String fileEndFlag = "**endoffile**pleasecreateNewfile**";
 
     public static void main(String[] args) throws IOException {
 
@@ -52,7 +53,8 @@ public class FilesTraverse {
 
                 File f = file.toFile();
                 InputStream is = new FileInputStream(f);
-                byte[] bytes = IOUtils.readNBytes(is, is.available());
+
+                byte[] bytes = combineByteArrays(IOUtils.readNBytes(is, is.available()), fileEndFlag.getBytes());
 
 
                 ByteBuffer buffer = ByteBuffer.wrap(bytes);
@@ -94,5 +96,17 @@ public class FilesTraverse {
         }
 
     }
+
+    private static byte[] combineByteArrays(byte[] b1, byte[] b2) {
+        if (b1 == null || b2 == null) {
+            return null;
+        }
+        byte[] combined = new byte[b1.length + b2.length];
+        for (int i = 0; i < combined.length; ++i) {
+            combined[i] = i < b1.length ? b1[i] : b2[i - b1.length];
+        }
+        return combined;
+    }
+
 
 }
