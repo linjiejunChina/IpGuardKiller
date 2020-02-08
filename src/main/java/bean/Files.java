@@ -6,10 +6,10 @@ import java.util.List;
 
 public class Files {
     List<FileSendedBySocket> fileSendedBySockets = new ArrayList<>();
+
+    public List<FileSendedBySocket> getFileSendedBySockets() {
+        return fileSendedBySockets;
+    }
 }
 
-class FileSendedBySocket {
-    String filePath;
-    String fileName;
-    File file;
-}
+

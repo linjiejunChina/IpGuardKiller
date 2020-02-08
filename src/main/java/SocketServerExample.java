@@ -1,3 +1,7 @@
+import bean.Files;
+import com.google.gson.Gson;
+
+import java.io.File;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -12,23 +16,25 @@ import java.util.*;
 public class SocketServerExample {
 
     private final static String IPTOLISTEN = "192.168.31.223";
-	private Selector selector;
-    private Map<SocketChannel,List<byte[]>> dataMapper;
+    private Selector selector;
+    private Map<SocketChannel, List<byte[]>> dataMapper;
     private InetSocketAddress listenAddress;
-    
+
+    private StringBuilder dataFromNet = new StringBuilder();
+
     public static void main(String[] args) throws Exception {
-    	Runnable server = new Runnable() {
-			@Override
-			public void run() {
-				 try {
-					new SocketServerExample(IPTOLISTEN, 8090).startServer();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				
-			}
-		};
-		
+        Runnable server = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    new SocketServerExample(IPTOLISTEN, 8090).startServer();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        };
+
 //		Runnable client = new Runnable() {
 //			@Override
 //			public void run() {
@@ -42,15 +48,15 @@ public class SocketServerExample {
 //
 //			}
 //		};
-       new Thread(server).start();
+        new Thread(server).start();
 //       new Thread(client, "client-A").start();
 //       new Thread(client, "client-B").start();
 
     }
 
     public SocketServerExample(String address, int port) throws IOException {
-    	listenAddress = new InetSocketAddress(address, port);
-        dataMapper = new HashMap<SocketChannel,List<byte[]>>();
+        listenAddress = new InetSocketAddress(address, port);
+        dataMapper = new HashMap<SocketChannel, List<byte[]>>();
     }
 
     // create server channel	
@@ -65,6 +71,7 @@ public class SocketServerExample {
 
         System.out.println("Server started...");
 
+        d:
         while (true) {
             // wait for events
             this.selector.select();
@@ -84,8 +91,8 @@ public class SocketServerExample {
 
                 if (key.isAcceptable()) {
                     this.accept(key);
-                }
-                else if (key.isReadable()) {
+                } else if (key.isReadable()) {
+                    System.out.println("key.isReadable()");
                     this.read(key);
                 }
             }
@@ -100,13 +107,13 @@ public class SocketServerExample {
         channel.configureBlocking(false);
         Socket socket = channel.socket();
         SocketAddress remoteAddr = socket.getRemoteSocketAddress();
-        System.out.println("Connected to client: " + remoteAddr+" local address"+socket.getLocalSocketAddress());
+        System.out.println("Connected to client: " + remoteAddr + " local address" + socket.getLocalSocketAddress());
 
         // register channel with selector for further IO
         dataMapper.put(channel, new ArrayList<byte[]>());
         channel.register(this.selector, SelectionKey.OP_READ);
     }
-    
+
     //read from the socket channel
     private void read(SelectionKey key) throws IOException {
         SocketChannel channel = (SocketChannel) key.channel();
@@ -121,12 +128,22 @@ public class SocketServerExample {
             System.out.println("Connection closed by client: " + remoteAddr);
             channel.close();
             key.cancel();
+
+            System.err.println(dataFromNet.toString());
+            Files files = new Gson().fromJson(dataFromNet.toString(), Files.class);
+
+            for (int i = 0; i < files.getFileSendedBySockets().size(); i++) {
+                File ff = files.getFileSendedBySockets().get(i).getFile();
+                System.out.println("receptfile:" + ff.length() + ff.getName());
+            }
+
+
             return;
         }
 
         byte[] data = new byte[numRead];
         System.arraycopy(buffer.array(), 0, data, 0, numRead);
-        System.err.println("data.length"+data.length);
+        dataFromNet.append(new String(data));
         System.out.println("Got: " + new String(data));
     }
 }

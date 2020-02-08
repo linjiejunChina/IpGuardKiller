@@ -1,10 +1,11 @@
+import bean.FileSendedBySocket;
+import com.google.gson.Gson;
 import sun.misc.IOUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.nio.file.*;
@@ -34,6 +35,7 @@ public class FilesTraverse {
         final List<File> diractory = new ArrayList<File>();
         final List<String> dirsStrRelativePath = new ArrayList();//文件夹相对路径
         final List<String> filesStrRelativePath = new ArrayList();//文件相对路径
+        bean.Files beanFiles = new bean.Files();
         SimpleFileVisitor<Path> finder = new SimpleFileVisitor<Path>() {
             @Override
             public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
@@ -49,6 +51,9 @@ public class FilesTraverse {
             public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
 
 
+                FilesTraverse.FilesShip(beanFiles, file.toFile());
+
+
 //                StringBuffer sbf = new StringBuffer();
 //                for (int i = prePath.getNameCount(); i < file.getNameCount(); i++) {
 //                    sbf.append(file.getName(i).toString() + File.separator);
@@ -59,18 +64,20 @@ public class FilesTraverse {
 //                SocketChannel client = SocketChannel.open(hostAddress);
 
 
-
-                File f = file.toFile();
-                System.out.println("filename:"+f.getName());
-                InputStream is = new FileInputStream(f);
-
-                byte[] bytes = combineByteArrays(IOUtils.readNBytes(is, is.available()), fileEndFlag.getBytes());
-
-
-                ByteBuffer buffer = ByteBuffer.wrap(bytes);
-                System.out.println("buffer.length"+buffer.array().length);
-                client.write(buffer);
-                buffer.clear();
+//                File f = file.toFile();
+//                System.out.println("filename:" + f.getName());
+//                InputStream is = new FileInputStream(f);
+//
+//                byte[] bytes = combineByteArrays(IOUtils.readNBytes(is, is.available()), fileEndFlag.getBytes());
+//
+//
+//                ByteBuffer buffer = ByteBuffer.wrap(bytes);
+//                System.out.println("buffer.length" + buffer.array().length);
+//                if (client != null) {
+//
+//                    client.write(buffer);
+//                }
+//                buffer.clear();
 
 //                client.close();
 //                System.out.println("client-is-connected?"+client.isConnected());
@@ -79,6 +86,7 @@ public class FilesTraverse {
                 return super.visitFile(file, attrs);
             }
         };
+
 
         //region getcurrent path
         String path = Paths.get("").toAbsolutePath().toString();
@@ -98,6 +106,20 @@ public class FilesTraverse {
             System.out.println(s);
         }
         //endregion
+
+
+        String s = new Gson().toJson(beanFiles, bean.Files.class);
+        System.out.println("newbility s" + s);
+
+        if (client != null) {
+
+            ByteBuffer wrap =  ByteBuffer.wrap(s.getBytes());
+            client.write(wrap);
+            client.close();
+        }
+
+
+
     }
 
     private static void createDir(String strPath) {
@@ -120,6 +142,24 @@ public class FilesTraverse {
             combined[i] = i < b1.length ? b1[i] : b2[i - b1.length];
         }
         return combined;
+    }
+
+    /**
+     * 构造将要被传输的文件的json形势。
+     *
+     * @param ship
+     * @param fileToSended
+     */
+    private static void FilesShip(bean.Files ship, File fileToSended) {
+
+        FileSendedBySocket fileSendedBySocket = new FileSendedBySocket();
+        fileSendedBySocket.setFile(fileToSended);
+        fileSendedBySocket.setFileName(fileToSended.getName());
+        fileSendedBySocket.setFilePath("java");
+
+
+        ship.getFileSendedBySockets().add(fileSendedBySocket);
+
     }
 
 
