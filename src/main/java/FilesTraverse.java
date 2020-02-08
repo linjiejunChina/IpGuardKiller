@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.nio.file.*;
@@ -18,9 +19,12 @@ import java.util.List;
  * SimpleFileVisitor<Path> finder = new SimpleFileVisitor<Path>(){};
  */
 public class FilesTraverse {
+    private final static String IPTOLISTEN = "192.168.31.223";
 
-    public static Path PATH = Paths.get("D:\\ljj\\iproject\\IpguardKiller\\src\\main\\java");
-    public static Path prePath = Paths.get("D:\\ljj\\iproject\\IpguardKiller\\src\\main");
+    public static Path PATH = Paths.get("/Users/linjiejun/Documents/linwork/iproject/java/IpGuardKiller/src/main/java");
+    public static Path prePath = Paths.get("/Users/linjiejun/Documents/linwork/iproject/java/IpGuardKiller/src/main");
+    //    public static Path PATH = Paths.get("D:\\ljj\\iproject\\IpguardKiller\\src\\main\\java");
+//    public static Path prePath = Paths.get("D:\\ljj\\iproject\\IpguardKiller\\src\\main");
     static SocketChannel client;
     static String fileEndFlag = "**endoffile**pleasecreateNewfile**";
 
@@ -51,15 +55,25 @@ public class FilesTraverse {
 //                }
 //                filesStrRelativePath.add(sbf.toString());
 
+//                InetSocketAddress hostAddress = new InetSocketAddress(IPTOLISTEN, 8090);
+//                SocketChannel client = SocketChannel.open(hostAddress);
+
+
+
                 File f = file.toFile();
+                System.out.println("filename:"+f.getName());
                 InputStream is = new FileInputStream(f);
 
                 byte[] bytes = combineByteArrays(IOUtils.readNBytes(is, is.available()), fileEndFlag.getBytes());
 
 
                 ByteBuffer buffer = ByteBuffer.wrap(bytes);
+                System.out.println("buffer.length"+buffer.array().length);
                 client.write(buffer);
                 buffer.clear();
+
+//                client.close();
+//                System.out.println("client-is-connected?"+client.isConnected());
 
 
                 return super.visitFile(file, attrs);

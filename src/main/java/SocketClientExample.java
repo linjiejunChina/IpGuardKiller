@@ -26,14 +26,11 @@ public class SocketClientExample {
     public static void startClient() throws IOException, InterruptedException {
         InetSocketAddress hostAddress = new InetSocketAddress(IPTOLISTEN, 8090);
         SocketChannel client = SocketChannel.open(hostAddress);
-        System.out.println(client);
-        FilesTraverse.client = client;
-        System.out.println("Client... started");
-
-        FilesTraverse.main(null);
-
-
-        client.close();
+//        System.out.println(client);
+//        FilesTraverse.client = client;
+//        System.out.println("Client... started");
+//        FilesTraverse.main(null);
+//        client.close();
     }
 }
 

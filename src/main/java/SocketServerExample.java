@@ -29,19 +29,19 @@ public class SocketServerExample {
 			}
 		};
 		
-		Runnable client = new Runnable() {
-			@Override
-			public void run() {
-				 try {
-					 new SocketClientExample().startClient();
-				} catch (IOException e) {
-					e.printStackTrace();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				
-			}
-		};
+//		Runnable client = new Runnable() {
+//			@Override
+//			public void run() {
+//				 try {
+//					 new SocketClientExample().startClient();
+//				} catch (IOException e) {
+//					e.printStackTrace();
+//				} catch (InterruptedException e) {
+//					e.printStackTrace();
+//				}
+//
+//			}
+//		};
        new Thread(server).start();
 //       new Thread(client, "client-A").start();
 //       new Thread(client, "client-B").start();
@@ -100,7 +100,7 @@ public class SocketServerExample {
         channel.configureBlocking(false);
         Socket socket = channel.socket();
         SocketAddress remoteAddr = socket.getRemoteSocketAddress();
-        System.out.println("Connected to: " + remoteAddr);
+        System.out.println("Connected to client: " + remoteAddr+" local address"+socket.getLocalSocketAddress());
 
         // register channel with selector for further IO
         dataMapper.put(channel, new ArrayList<byte[]>());
@@ -112,7 +112,7 @@ public class SocketServerExample {
         SocketChannel channel = (SocketChannel) key.channel();
         ByteBuffer buffer = ByteBuffer.allocate(1024);
         int numRead = -1;
-        numRead = channel.read(buffer);
+        numRead = channel.read(buffer);//读取channel数据到buffer
 
         if (numRead == -1) {
             this.dataMapper.remove(channel);
@@ -126,6 +126,7 @@ public class SocketServerExample {
 
         byte[] data = new byte[numRead];
         System.arraycopy(buffer.array(), 0, data, 0, numRead);
+        System.err.println("data.length"+data.length);
         System.out.println("Got: " + new String(data));
     }
 }
