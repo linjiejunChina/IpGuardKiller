@@ -28,7 +28,6 @@ public class FilesTraverse {
     //    public static Path PATH = Paths.get("D:\\ljj\\iproject\\IpguardKiller\\src\\main\\java");
 //    public static Path prePath = Paths.get("D:\\ljj\\iproject\\IpguardKiller\\src\\main");
     static SocketChannel client;
-    static String fileEndFlag = "**endoffile**pleasecreateNewfile**";
 
     public static void main(String[] args) throws IOException {
 
