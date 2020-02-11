@@ -1,8 +1,9 @@
 package bean;
 
 import java.io.File;
+import java.io.Serializable;
 
-public class FileSendedBySocket {
+public class FileSendedBySocket implements Serializable {
     String filePath;//将要被传输的文件夹路径，不是绝对路径
     String fileName;
     File file;

@@ -5,7 +5,8 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 
 public class SocketClientExample {
-    private final static String IPTOLISTEN = "192.168.31.223";
+    private final static String IPTOLISTEN = "127.0.0.1";
+//    private final static String IPTOLISTEN = "192.168.31.223";
 
     public static void main(String[] args) throws IOException, InterruptedException {
         new Thread(new Runnable() {

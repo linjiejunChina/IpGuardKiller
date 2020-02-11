@@ -2,10 +2,8 @@ import bean.FileSendedBySocket;
 import com.google.gson.Gson;
 import sun.misc.IOUtils;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.nio.file.*;
@@ -20,7 +18,7 @@ import java.util.List;
  * SimpleFileVisitor<Path> finder = new SimpleFileVisitor<Path>(){};
  */
 public class FilesTraverse {
-    private final static String IPTOLISTEN = "192.168.31.223";
+    private final static String IPTOLISTEN = "127.0.0.1";
 
     public static Path PATH = Paths.get("/Users/linjiejun/Documents/linwork/iproject/java/IpGuardKiller/src/main/java");
     public static Path prePath = Paths.get("/Users/linjiejun/Documents/linwork/iproject/java/IpGuardKiller/src/main");
@@ -51,36 +49,35 @@ public class FilesTraverse {
             public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
 
 
-                FilesTraverse.FilesShip(beanFiles, file.toFile());
+//                FilesTraverse.FilesShip(beanFiles, file.toFile());
 
 
-//                StringBuffer sbf = new StringBuffer();
-//                for (int i = prePath.getNameCount(); i < file.getNameCount(); i++) {
-//                    sbf.append(file.getName(i).toString() + File.separator);
-//                }
-//                filesStrRelativePath.add(sbf.toString());
+                StringBuffer sbf = new StringBuffer();
+                for (int i = prePath.getNameCount(); i < file.getNameCount(); i++) {
+                    sbf.append(file.getName(i).toString() + File.separator);
+                }
+                filesStrRelativePath.add(sbf.toString());
 
 //                InetSocketAddress hostAddress = new InetSocketAddress(IPTOLISTEN, 8090);
 //                SocketChannel client = SocketChannel.open(hostAddress);
 
 
-//                File f = file.toFile();
-//                System.out.println("filename:" + f.getName());
-//                InputStream is = new FileInputStream(f);
-//
-//                byte[] bytes = combineByteArrays(IOUtils.readNBytes(is, is.available()), fileEndFlag.getBytes());
-//
-//
-//                ByteBuffer buffer = ByteBuffer.wrap(bytes);
-//                System.out.println("buffer.length" + buffer.array().length);
-//                if (client != null) {
-//
-//                    client.write(buffer);
-//                }
-//                buffer.clear();
+                File f = file.toFile();
+                System.out.println("filename:" + f.getName());
+                InputStream is = new FileInputStream(f);
+
+                byte[] bytes = IOUtils.readNBytes(is, is.available());
+
+
+                ByteBuffer buffer = ByteBuffer.wrap(bytes);
+                System.out.println("buffer.length" + buffer.array().length);
+                if (client != null) {
+                    client.write(buffer);
+                }
+                buffer.clear();
 
 //                client.close();
-//                System.out.println("client-is-connected?"+client.isConnected());
+//                System.out.println("client-is-connected?" + client.isConnected());
 
 
                 return super.visitFile(file, attrs);
@@ -108,16 +105,15 @@ public class FilesTraverse {
         //endregion
 
 
-        String s = new Gson().toJson(beanFiles, bean.Files.class);
-        System.out.println("newbility s" + s);
-
         if (client != null) {
 
-            ByteBuffer wrap =  ByteBuffer.wrap(s.getBytes());
-            client.write(wrap);
-            client.close();
-        }
 
+            ObjectOutputStream oos = new ObjectOutputStream(client.socket().getOutputStream());
+            oos.writeObject(beanFiles);
+            oos.close();
+
+
+        }
 
 
     }
@@ -133,16 +129,7 @@ public class FilesTraverse {
 
     }
 
-    private static byte[] combineByteArrays(byte[] b1, byte[] b2) {
-        if (b1 == null || b2 == null) {
-            return null;
-        }
-        byte[] combined = new byte[b1.length + b2.length];
-        for (int i = 0; i < combined.length; ++i) {
-            combined[i] = i < b1.length ? b1[i] : b2[i - b1.length];
-        }
-        return combined;
-    }
+
 
     /**
      * 构造将要被传输的文件的json形势。

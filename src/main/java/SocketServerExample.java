@@ -3,6 +3,7 @@ import com.google.gson.Gson;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
@@ -15,11 +16,12 @@ import java.util.*;
 
 public class SocketServerExample {
 
-    private final static String IPTOLISTEN = "192.168.31.223";
+    private final static String IPTOLISTEN = "127.0.0.1";
+    //    private final static String IPTOLISTEN = "192.168.31.223";
     private Selector selector;
     private Map<SocketChannel, List<byte[]>> dataMapper;
     private InetSocketAddress listenAddress;
-
+    private byte[] combineByte = new byte[0];
     private StringBuilder dataFromNet = new StringBuilder();
 
     public static void main(String[] args) throws Exception {
@@ -29,6 +31,8 @@ public class SocketServerExample {
                 try {
                     new SocketServerExample(IPTOLISTEN, 8090).startServer();
                 } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 }
 
@@ -60,7 +64,7 @@ public class SocketServerExample {
     }
 
     // create server channel	
-    private void startServer() throws IOException {
+    private void startServer() throws IOException, ClassNotFoundException {
         this.selector = Selector.open();
         ServerSocketChannel serverChannel = ServerSocketChannel.open();
         serverChannel.configureBlocking(false);
@@ -71,7 +75,6 @@ public class SocketServerExample {
 
         System.out.println("Server started...");
 
-        d:
         while (true) {
             // wait for events
             this.selector.select();
@@ -115,8 +118,34 @@ public class SocketServerExample {
     }
 
     //read from the socket channel
-    private void read(SelectionKey key) throws IOException {
+    private void read(SelectionKey key) throws IOException, ClassNotFoundException {
         SocketChannel channel = (SocketChannel) key.channel();
+
+
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//                ObjectInputStream ois = null;
+//                try {
+//                    ois = new ObjectInputStream(channel.socket().getInputStream());
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//
+//                String s = null;
+//                try {
+//                    s = (String) ois.readObject();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                } catch (ClassNotFoundException e) {
+//                    e.printStackTrace();
+//                }
+//                System.out.println(s);
+//            }
+//        }).start();
+
+
         ByteBuffer buffer = ByteBuffer.allocate(1024);
         int numRead = -1;
         numRead = channel.read(buffer);//读取channel数据到buffer
@@ -128,22 +157,17 @@ public class SocketServerExample {
             System.out.println("Connection closed by client: " + remoteAddr);
             channel.close();
             key.cancel();
-
-            System.err.println(dataFromNet.toString());
-            Files files = new Gson().fromJson(dataFromNet.toString(), Files.class);
-
-            for (int i = 0; i < files.getFileSendedBySockets().size(); i++) {
-                File ff = files.getFileSendedBySockets().get(i).getFile();
-                System.out.println("receptfile:" + ff.length() + ff.getName());
-            }
-
-
+            System.out.println("combineByteLength"+combineByte.length);
+            System.out.println("Got: " + new String(combineByte));
+            combineByte = new byte[0];
             return;
         }
 
         byte[] data = new byte[numRead];
-        System.arraycopy(buffer.array(), 0, data, 0, numRead);
-        dataFromNet.append(new String(data));
-        System.out.println("Got: " + new String(data));
+//        System.arraycopy(buffer.array(), 0, data, 0, numRead);
+//        dataFromNet.append(new String(data));
+//        System.out.println("Got: " + new String(data));
+
+        combineByte = Utils.combineByteArrays(combineByte, data);
     }
 }
