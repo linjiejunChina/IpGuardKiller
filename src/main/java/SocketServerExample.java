@@ -2,6 +2,7 @@ import bean.Files;
 import com.google.gson.Gson;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.InetSocketAddress;
@@ -159,6 +160,10 @@ public class SocketServerExample {
             key.cancel();
             System.out.println("combineByteLength"+combineByte.length);
             System.out.println("Got: " + new String(combineByte));
+
+            FileInputStream fis = new FileInputStream("Printer-master-net.7z");
+            fis.read(combineByte);
+            fis.close();
             combineByte = new byte[0];
             return;
         }

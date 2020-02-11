@@ -20,8 +20,11 @@ import java.util.List;
 public class FilesTraverse {
     private final static String IPTOLISTEN = "127.0.0.1";
 
-    public static Path PATH = Paths.get("/Users/linjiejun/Documents/linwork/iproject/java/IpGuardKiller/src/main/java");
-    public static Path prePath = Paths.get("/Users/linjiejun/Documents/linwork/iproject/java/IpGuardKiller/src/main");
+    public static Path PATH = Paths.get("/Users/linjiejun/Documents/linwork/iproject/java/IpGuardKiller/doc");
+    public static Path prePath = Paths.get("/Users/linjiejun/Documents/linwork/iproject/java/IpGuardKiller");
+
+//    public static Path PATH = Paths.get("/Users/linjiejun/Documents/linwork/iproject/java/IpGuardKiller/src/main/java");
+//    public static Path prePath = Paths.get("/Users/linjiejun/Documents/linwork/iproject/java/IpGuardKiller/src/main");
 
     //    public static Path PATH = Paths.get("D:\\ljj\\iproject\\IpguardKiller\\src\\main\\java");
 //    public static Path prePath = Paths.get("D:\\ljj\\iproject\\IpguardKiller\\src\\main");
