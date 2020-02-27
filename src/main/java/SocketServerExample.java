@@ -1,10 +1,6 @@
-import bean.Files;
-import com.google.gson.Gson;
-
 import java.io.File;
-import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
@@ -13,12 +9,17 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 public class SocketServerExample {
 
-    private final static String IPTOLISTEN = "127.0.0.1";
-    //    private final static String IPTOLISTEN = "192.168.31.223";
+//    private final static String IPTOLISTEN = "127.0.0.1";
+        private final static String IPTOLISTEN = "192.168.31.223";
     private Selector selector;
     private Map<SocketChannel, List<byte[]>> dataMapper;
     private InetSocketAddress listenAddress;
@@ -158,18 +159,26 @@ public class SocketServerExample {
             System.out.println("Connection closed by client: " + remoteAddr);
             channel.close();
             key.cancel();
-            System.out.println("combineByteLength"+combineByte.length);
-            System.out.println("Got: " + new String(combineByte));
+//            System.out.println("combineByteLength"+combineByte.length);
+//            System.out.println("Got: " + new String(combineByte));
 
-            FileInputStream fis = new FileInputStream("Printer-master-net.7z");
-            fis.read(combineByte);
-            fis.close();
-            combineByte = new byte[0];
+            File file = new File(
+                    "/Users/linjiejun/Documents/linwork/iproject/java/" +
+                            "IpGuardKiller/doc2/Printer-master-net.7z");
+            FileOutputStream fos = new FileOutputStream(file);
+//            byte[] outByte = Arrays.copyOfRange(combineByte, 0, combineByte.length - 126);
+            byte[] outByte = this.combineByte;
+
+            fos.write(outByte);
+            fos.flush();
+            fos.close();
+            System.out.println(outByte.length+"server_file_byte_size");
+            this.combineByte = new byte[0];
             return;
         }
 
         byte[] data = new byte[numRead];
-//        System.arraycopy(buffer.array(), 0, data, 0, numRead);
+        System.arraycopy(buffer.array(), 0, data, 0, numRead);
 //        dataFromNet.append(new String(data));
 //        System.out.println("Got: " + new String(data));
 

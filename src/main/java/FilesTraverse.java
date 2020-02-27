@@ -1,15 +1,22 @@
-import bean.FileSendedBySocket;
-import com.google.gson.Gson;
-import sun.misc.IOUtils;
-
-import java.io.*;
-import java.net.InetSocketAddress;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectOutputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
-import java.nio.file.*;
+import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
+
+import bean.FileSendedBySocket;
+import sun.misc.IOUtils;
 
 /**
  * 遍历指定路径下的文件夹和文件。
@@ -39,7 +46,8 @@ public class FilesTraverse {
         bean.Files beanFiles = new bean.Files();
         SimpleFileVisitor<Path> finder = new SimpleFileVisitor<Path>() {
             @Override
-            public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+            public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs)
+                    throws IOException {
                 StringBuffer sbf = new StringBuffer();
                 for (int i = prePath.getNameCount(); i < dir.getNameCount(); i++) {
                     sbf.append(dir.getName(i).toString() + File.separator);
@@ -49,27 +57,34 @@ public class FilesTraverse {
             }
 
             @Override
-            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
+                    throws IOException {
 
 
 //                FilesTraverse.FilesShip(beanFiles, file.toFile());
 
 
-                StringBuffer sbf = new StringBuffer();
-                for (int i = prePath.getNameCount(); i < file.getNameCount(); i++) {
-                    sbf.append(file.getName(i).toString() + File.separator);
-                }
-                filesStrRelativePath.add(sbf.toString());
+//                StringBuffer sbf = new StringBuffer();
+//                for (int i = prePath.getNameCount(); i < file.getNameCount(); i++) {
+//                    sbf.append(file.getName(i).toString() + File.separator);
+//                }
+//                filesStrRelativePath.add(sbf.toString());
 
 //                InetSocketAddress hostAddress = new InetSocketAddress(IPTOLISTEN, 8090);
 //                SocketChannel client = SocketChannel.open(hostAddress);
 
-
                 File f = file.toFile();
                 System.out.println("filename:" + f.getName());
+                if (f.getName().equals(".DS_Store")) {
+                    System.out.println("file is escape");
+
+                    return super.visitFile(file, attrs);
+                }
                 InputStream is = new FileInputStream(f);
 
                 byte[] bytes = IOUtils.readNBytes(is, is.available());
+
+                is.close();
 
 
                 ByteBuffer buffer = ByteBuffer.wrap(bytes);
@@ -135,7 +150,6 @@ public class FilesTraverse {
 
 
     /**
-     * 构造将要被传输的文件的json形势。
      *
      * @param ship
      * @param fileToSended

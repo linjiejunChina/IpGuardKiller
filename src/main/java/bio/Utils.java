@@ -1,8 +1,9 @@
+package bio;
+
 public class Utils {
 
     /**
      * 返回一个新的字节数组
-     * b2向b1去追加
      * @param b1
      * @param b2
      * @return
@@ -17,6 +18,12 @@ public class Utils {
         }
         return combined;
     }
+
+//    public static final String FROMFILE = "/Users/linjiejun/Documents/linwork/iproject/java/IpGuardKiller/doc/test.txt.zip";
+//    public static final String TOFILE = "/Users/linjiejun/Documents/linwork/iproject/java/IpGuardKiller/doc2/test2.txt.zip";
+
+//    public static final String FROMFILE = "/Users/linjiejun/Documents/linwork/iproject/java/IpGuardKiller/doc/test.txt";
+//    public static final String TOFILE = "/Users/linjiejun/Documents/linwork/iproject/java/IpGuardKiller/doc2/test2.txt";
 
     public static final String FROMFILE = "/Users/linjiejun/Documents/linwork/iproject/java/IpGuardKiller/doc/Printer-master.7z";
     public static final String TOFILE = "/Users/linjiejun/Documents/linwork/iproject/java/IpGuardKiller/doc2/Printer-master-net.7z";
