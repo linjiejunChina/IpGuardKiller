@@ -165,7 +165,7 @@ public class SocketServerExample {
 
             File file = new File(
                     "/Users/linjiejun/Documents/linwork/iproject/java/" +
-                            "IpGuardKiller/doc2/Printer-master-net.7z");
+                            "IpGuardKiller/doc2/OneFile-net.txt");
             FileOutputStream fos = new FileOutputStream(file);
 //            byte[] outByte = Arrays.copyOfRange(combineByte, 0, combineByte.length - 126);
             byte[] outByte = this.combineByte;
