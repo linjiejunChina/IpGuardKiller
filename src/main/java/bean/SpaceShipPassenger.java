@@ -6,7 +6,7 @@ import java.io.Serializable;
 /**
  * 将要被序列化的文件集合。
  */
-public class FileSendedBySocket implements Serializable {
+public class SpaceShipPassenger implements Serializable {
     String filePath;//将要被传输的文件夹路径，不是绝对路径
     String fileName;//文件名
     File file;//文件真实数据

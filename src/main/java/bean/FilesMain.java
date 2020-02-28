@@ -11,17 +11,17 @@
 //public class FilesMain {
 //    public static void main(String[] args) throws IOException {
 //
-//        FileSendedBySocket fileSendedBySocket = new FileSendedBySocket();
+//        SpaceShipPassenger fileSendedBySocket = new SpaceShipPassenger();
 //        fileSendedBySocket.file = new File("/Users/linjiejun/Documents/linwork/iproject/java/IpGuardKiller/src/main/java/HelloWorld.java");
 //        fileSendedBySocket.fileName = "HelloWorld.java";
 //        fileSendedBySocket.filePath = "IpGuardKiller/src/main/java/";
 //
-//        FileSendedBySocket fileSendedBySocket2 = new FileSendedBySocket();
+//        SpaceShipPassenger fileSendedBySocket2 = new SpaceShipPassenger();
 //        fileSendedBySocket2.file = new File("/Users/linjiejun/Documents/linwork/iproject/java/IpGuardKiller/src/main/java/FilesTraverse.java");
 //        fileSendedBySocket2.fileName = "FilesTraverse.java";
 //        fileSendedBySocket2.filePath = "IpGuardKiller/src/main/java/";
 //
-//        Files files = new Files();
+//        FilesSpaceShip files = new FilesSpaceShip();
 //        files.fileSendedBySockets.add(fileSendedBySocket);
 //        files.fileSendedBySockets.add(fileSendedBySocket2);
 //
@@ -29,7 +29,7 @@
 //        System.out.println(s);
 //
 //
-//        Files files1 = new Gson().fromJson(s, Files.class);
+//        FilesSpaceShip files1 = new Gson().fromJson(s, FilesSpaceShip.class);
 //        File file = files1.fileSendedBySockets.get(0).file;
 //        File file2 = files1.fileSendedBySockets.get(1).file;
 //        System.out.println(file.length());
@@ -46,7 +46,7 @@
 //        FileOutputStream fileOutputStream =
 //                new FileOutputStream("/Users/linjiejun/Documents/linwork/iproject/java/IpGuardKiller/src/main/java/bean/HelloWorld.java");
 //        FileChannel channel = fileOutputStream.getChannel();
-//        byte[] bytes = java.nio.file.Files.readAllBytes(file.toPath());//数据在这里。
+//        byte[] bytes = java.nio.file.FilesSpaceShip.readAllBytes(file.toPath());//数据在这里。
 //        //向目标位置输出数据。
 //        ByteBuffer wrap = ByteBuffer.wrap(bytes);
 //        channel.write(wrap);

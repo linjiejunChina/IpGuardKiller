@@ -3,6 +3,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectOutputStream;
+import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.nio.file.FileAlreadyExistsException;
@@ -15,12 +16,14 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
 
+import bean.SpaceShipPassenger;
+import bean.FilesSpaceShip;
 import sun.misc.IOUtils;
 
 /**
  * 遍历指定路径下的文件夹和文件。
  * 重点就两行。
- * java.nio.file.Files.walkFileTree(PATH, finder);
+ * java.nio.file.FilesSpaceShip.walkFileTree(PATH, finder);
  * SimpleFileVisitor<Path> finder = new SimpleFileVisitor<Path>(){};
  */
 public class FilesTraverse {
@@ -43,7 +46,7 @@ public class FilesTraverse {
         final List<File> diractory = new ArrayList<File>();
         final List<String> dirsStrRelativePath = new ArrayList();//文件夹相对路径
         final List<String> filesStrRelativePath = new ArrayList();//文件相对路径
-        bean.Files beanFiles = new bean.Files();
+        FilesSpaceShip spaceShip1 = new FilesSpaceShip();
         SimpleFileVisitor<Path> finder = new SimpleFileVisitor<Path>() {
             @Override
             public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs)
@@ -61,7 +64,7 @@ public class FilesTraverse {
                     throws IOException {
 
 
-//                FilesTraverse.FilesShip(beanFiles, file.toFile());
+                FilesTraverse.LoadFileToFilesSpaceShip(spaceShip1, file.toFile());
 
 
 //                StringBuffer sbf = new StringBuffer();
@@ -72,6 +75,9 @@ public class FilesTraverse {
 
 //                InetSocketAddress hostAddress = new InetSocketAddress(IPTOLISTEN, 8090);
 //                SocketChannel client = SocketChannel.open(hostAddress);
+
+
+                //////////////
 
                 File f = file.toFile();
                 System.out.println("filename:" + f.getName());
@@ -127,7 +133,7 @@ public class FilesTraverse {
 
 
             ObjectOutputStream oos = new ObjectOutputStream(client.socket().getOutputStream());
-            oos.writeObject(beanFiles);
+            oos.writeObject(spaceShip1);
             oos.close();
 
 
@@ -151,20 +157,20 @@ public class FilesTraverse {
 
     /**
      *
-     * @param ship
-     * @param fileToSended
+     * @param spaceShip
+     * @param file
      */
-//    private static void FilesShip(bean.Files ship, File fileToSended) {
-//
-//        FileSendedBySocket fileSendedBySocket = new FileSendedBySocket();
-//        fileSendedBySocket.setFile(fileToSended);
-//        fileSendedBySocket.setFileName(fileToSended.getName());
-//        fileSendedBySocket.setFilePath("java");
-//
-//
-//        ship.getFileSendedBySockets().add(fileSendedBySocket);
-//
-//    }
+    private static void LoadFileToFilesSpaceShip(FilesSpaceShip spaceShip, File file) {
+
+        SpaceShipPassenger passenger = new SpaceShipPassenger();
+        passenger.setFile(file);
+        passenger.setFileName(file.getName());
+        passenger.setFilePath("java");
+
+
+        spaceShip.getFileSendedBySockets().add(passenger);
+
+    }
 
 
 }
