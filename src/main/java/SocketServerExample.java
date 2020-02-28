@@ -19,7 +19,8 @@ import java.util.Map;
 public class SocketServerExample {
 
 //    private final static String IPTOLISTEN = "127.0.0.1";
-        private final static String IPTOLISTEN = "192.168.31.223";
+        private final static String IPTOLISTEN = "192.168.137.173";
+//        private final static String IPTOLISTEN = "192.168.31.223";
     private Selector selector;
     private Map<SocketChannel, List<byte[]>> dataMapper;
     private InetSocketAddress listenAddress;

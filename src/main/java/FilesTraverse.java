@@ -15,7 +15,6 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
 
-import bean.FileSendedBySocket;
 import sun.misc.IOUtils;
 
 /**
@@ -25,10 +24,11 @@ import sun.misc.IOUtils;
  * SimpleFileVisitor<Path> finder = new SimpleFileVisitor<Path>(){};
  */
 public class FilesTraverse {
-    private final static String IPTOLISTEN = "127.0.0.1";
 
-    public static Path PATH = Paths.get("/Users/linjiejun/Documents/linwork/iproject/java/IpGuardKiller/doc");
-    public static Path prePath = Paths.get("/Users/linjiejun/Documents/linwork/iproject/java/IpGuardKiller");
+    public static Path PATH = Paths.get("C:\\Users\\lin\\Desktop\\temp");
+    public static Path prePath = Paths.get("C:\\Users\\lin\\Desktop");
+//    public static Path PATH = Paths.get("/Users/linjiejun/Documents/linwork/iproject/java/IpGuardKiller/doc");
+//    public static Path prePath = Paths.get("/Users/linjiejun/Documents/linwork/iproject/java/IpGuardKiller");
 
 //    public static Path PATH = Paths.get("/Users/linjiejun/Documents/linwork/iproject/java/IpGuardKiller/src/main/java");
 //    public static Path prePath = Paths.get("/Users/linjiejun/Documents/linwork/iproject/java/IpGuardKiller/src/main");
@@ -154,17 +154,17 @@ public class FilesTraverse {
      * @param ship
      * @param fileToSended
      */
-    private static void FilesShip(bean.Files ship, File fileToSended) {
-
-        FileSendedBySocket fileSendedBySocket = new FileSendedBySocket();
-        fileSendedBySocket.setFile(fileToSended);
-        fileSendedBySocket.setFileName(fileToSended.getName());
-        fileSendedBySocket.setFilePath("java");
-
-
-        ship.getFileSendedBySockets().add(fileSendedBySocket);
-
-    }
+//    private static void FilesShip(bean.Files ship, File fileToSended) {
+//
+//        FileSendedBySocket fileSendedBySocket = new FileSendedBySocket();
+//        fileSendedBySocket.setFile(fileToSended);
+//        fileSendedBySocket.setFileName(fileToSended.getName());
+//        fileSendedBySocket.setFilePath("java");
+//
+//
+//        ship.getFileSendedBySockets().add(fileSendedBySocket);
+//
+//    }
 
 
 }
