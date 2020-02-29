@@ -124,10 +124,12 @@ public class FilesTraverse {
         byte[] transferStation = new byte[((int) file.length())];
         bferIs.read(transferStation, 0, transferStation.length);
         return transferStation;
-
     }
 
     private static String getInterestFilePath(String originPath,String headOfPathToCutOff) {
+        if (!headOfPathToCutOff.endsWith(File.separator)) {
+            headOfPathToCutOff += File.separator;
+        }
         return originPath.replace(headOfPathToCutOff, "");
     }
 
