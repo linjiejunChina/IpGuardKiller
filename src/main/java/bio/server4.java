@@ -31,11 +31,7 @@ public class server4 {
             fileOutputStream.write(fileSendedBySocket.getFileData());
             fileOutputStream.flush();
             fileOutputStream.close();
-
-
         }
-
-
         objIs.close();
         is.close();
         socket.close();

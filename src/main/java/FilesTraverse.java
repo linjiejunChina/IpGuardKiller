@@ -91,6 +91,8 @@ public class FilesTraverse {
             @Override
             public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
                     throws IOException {
+                System.out.println("getPath"+file.toFile().getPath());
+                System.out.println("getCanonicalPath"+file.toFile().getCanonicalPath());
                 FilesTraverse.LoadFileToFilesSpaceShip(spaceShip1, file.toFile());
                 return super.visitFile(file, attrs);
             }
@@ -115,7 +117,6 @@ public class FilesTraverse {
         oos.close();
         System.out.println("Connection ended");
     }
-
 
 
     private static byte[] suckBytesFromFile(File file) throws IOException {
