@@ -10,6 +10,15 @@ public class SpaceShipPassenger implements Serializable {
     String filePath;//将要被传输的文件夹路径，不是绝对路径
     String fileName;//文件名
     File file;//文件真实数据
+    byte[] fileData;
+
+    public byte[] getFileData() {
+        return fileData;
+    }
+
+    public void setFileData(byte[] fileData) {
+        this.fileData = fileData;
+    }
 
     public String getFilePath() {
         return filePath;

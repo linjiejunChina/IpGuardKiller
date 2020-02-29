@@ -1,5 +1,7 @@
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectOutputStream;
@@ -56,12 +58,13 @@ public class FilesTraverse {
      * @param spaceShip
      * @param file
      */
-    private static void LoadFileToFilesSpaceShip(FilesSpaceShip spaceShip, File file) {
+    private static void LoadFileToFilesSpaceShip(FilesSpaceShip spaceShip, File file) throws IOException {
 
         SpaceShipPassenger passenger = new SpaceShipPassenger();
         passenger.setFile(file);
         passenger.setFileName(file.getName());
         passenger.setFilePath("java");
+        passenger.setFileData(suckBytesFromFile(file));
         spaceShip.getFileSendedBySockets().add(passenger);
 
     }
@@ -89,7 +92,6 @@ public class FilesTraverse {
             @Override
             public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
                     throws IOException {
-
                 FilesTraverse.LoadFileToFilesSpaceShip(spaceShip1, file.toFile());
                 return super.visitFile(file, attrs);
             }
@@ -117,5 +119,14 @@ public class FilesTraverse {
         System.out.println("Connection ended");
     }
 
+
+
+    private static byte[] suckBytesFromFile(File file) throws IOException {
+        BufferedInputStream bferIs = new BufferedInputStream(new FileInputStream(file));
+        byte[] transferStation = new byte[((int) file.length())];
+        bferIs.read(transferStation, 0, transferStation.length);
+        return transferStation;
+
+    }
 
 }

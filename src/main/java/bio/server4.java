@@ -5,6 +5,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import bean.FilesSpaceShip;
+import bean.SpaceShipPassenger;
 
 import static bio.Utils.TOFILE;
 
@@ -21,10 +22,24 @@ public class server4 {
         System.out.println(ship.getFileSendedBySockets().size() + "recive spaceShip conpactor is ");
         System.out.println(ship.hashCode() + "server-hash code is ");
 
+        for (SpaceShipPassenger fileSendedBySocket : ship.getFileSendedBySockets()) {
+            System.out.println("file name is " + fileSendedBySocket.getFile().getName() + "size is "
+                    + getFileSizeExceptDirectory(fileSendedBySocket.getFile()));
+
+        }
+
 
         objIs.close();
         is.close();
         socket.close();
+    }
+
+    private static int getFileSizeExceptDirectory(File file) throws IOException {
+        if (!file.isDirectory()) {
+            return new FileInputStream(file).available();
+        } else {
+            return -1;
+        }
     }
 
 }
