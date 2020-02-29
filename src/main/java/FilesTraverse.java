@@ -91,8 +91,7 @@ public class FilesTraverse {
             @Override
             public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
                     throws IOException {
-                System.out.println("getPath"+file.toFile().getPath());
-                System.out.println("getCanonicalPath"+file.toFile().getCanonicalPath());
+                System.out.println(getInterestFilePath(file.toFile().getCanonicalPath(), ""));
                 FilesTraverse.LoadFileToFilesSpaceShip(spaceShip1, file.toFile());
                 return super.visitFile(file, attrs);
             }
@@ -125,6 +124,10 @@ public class FilesTraverse {
         bferIs.read(transferStation, 0, transferStation.length);
         return transferStation;
 
+    }
+
+    private static String getInterestFilePath(String originPath,String headOfPathToCutOff) {
+        return originPath.replace(headOfPathToCutOff, "");
     }
 
 }
