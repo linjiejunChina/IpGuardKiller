@@ -25,8 +25,7 @@ public class server4 {
         for (SpaceShipPassenger fileSendedBySocket : ship.getFileSendedBySockets()) {
 
             System.out.println(fileSendedBySocket.getFileData().length);
-            File file = new File("/Users/linjiejun/Documents/linwork/iproject/java/IpGuardKiller/doc"
-                    + "/" + fileSendedBySocket.getFileName());
+            File file = new File(receiveSizeAbsPath(Common.PathToStoreDirectory,fileSendedBySocket.getFileName()));
             FileOutputStream fileOutputStream = new FileOutputStream(file);
             fileOutputStream.write(fileSendedBySocket.getFileData());
             fileOutputStream.flush();
@@ -35,6 +34,16 @@ public class server4 {
         objIs.close();
         is.close();
         socket.close();
+    }
+
+
+    private static String receiveSizeAbsPath(String prePath, String directory) {
+        if (!prePath.endsWith("/")) {
+            prePath = prePath + "/";
+        }
+        String s = prePath + directory;
+        System.out.println(s);
+        return s;
     }
 
 

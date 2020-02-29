@@ -33,6 +33,7 @@ import static java.nio.file.Files.walkFileTree;
  * SimpleFileVisitor<Path> finder = new SimpleFileVisitor<Path>(){};
  */
 public class FilesTraverse {
+    private static String HEAD_OF_PATH_TO_CUT_OFF = "";
     static SocketChannel client;
 
     public static void main(String[] args) throws IOException {
@@ -63,7 +64,7 @@ public class FilesTraverse {
         SpaceShipPassenger passenger = new SpaceShipPassenger();
         passenger.setFile(file);
         passenger.setFileName(file.getName());
-        passenger.setFilePath("java");
+        passenger.setFilePath(getInterestFilePath(file.getCanonicalPath(),HEAD_OF_PATH_TO_CUT_OFF));
         passenger.setFileData(suckBytesFromFile(file));
         spaceShip.getFileSendedBySockets().add(passenger);
     }
@@ -91,7 +92,7 @@ public class FilesTraverse {
             @Override
             public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
                     throws IOException {
-                System.out.println(getInterestFilePath(file.toFile().getCanonicalPath(), ""));
+                System.out.println(getInterestFilePath(file.toFile().getCanonicalPath(), HEAD_OF_PATH_TO_CUT_OFF));
                 FilesTraverse.LoadFileToFilesSpaceShip(spaceShip1, file.toFile());
                 return super.visitFile(file, attrs);
             }
