@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetSocketAddress;
+import java.net.Socket;
 import java.nio.ByteBuffer;
+import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.FileVisitResult;
@@ -20,6 +22,8 @@ import bean.SpaceShipPassenger;
 import bean.FilesSpaceShip;
 import sun.misc.IOUtils;
 
+import static java.nio.file.Files.walkFileTree;
+
 /**
  * 遍历指定路径下的文件夹和文件。
  * 重点就两行。
@@ -27,118 +31,12 @@ import sun.misc.IOUtils;
  * SimpleFileVisitor<Path> finder = new SimpleFileVisitor<Path>(){};
  */
 public class FilesTraverse {
-
-    public static Path PATH = Paths.get("C:\\Users\\lin\\Desktop\\temp");
-    public static Path prePath = Paths.get("C:\\Users\\lin\\Desktop");
-//    public static Path PATH = Paths.get("/Users/linjiejun/Documents/linwork/iproject/java/IpGuardKiller/doc");
-//    public static Path prePath = Paths.get("/Users/linjiejun/Documents/linwork/iproject/java/IpGuardKiller");
-
-//    public static Path PATH = Paths.get("/Users/linjiejun/Documents/linwork/iproject/java/IpGuardKiller/src/main/java");
-//    public static Path prePath = Paths.get("/Users/linjiejun/Documents/linwork/iproject/java/IpGuardKiller/src/main");
-
-    //    public static Path PATH = Paths.get("D:\\ljj\\iproject\\IpguardKiller\\src\\main\\java");
-//    public static Path prePath = Paths.get("D:\\ljj\\iproject\\IpguardKiller\\src\\main");
     static SocketChannel client;
 
     public static void main(String[] args) throws IOException {
 
-        final List<File> files = new ArrayList<File>();
-        final List<File> diractory = new ArrayList<File>();
-        final List<String> dirsStrRelativePath = new ArrayList();//文件夹相对路径
-        final List<String> filesStrRelativePath = new ArrayList();//文件相对路径
-        FilesSpaceShip spaceShip1 = new FilesSpaceShip();
-        SimpleFileVisitor<Path> finder = new SimpleFileVisitor<Path>() {
-            @Override
-            public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs)
-                    throws IOException {
-                StringBuffer sbf = new StringBuffer();
-                for (int i = prePath.getNameCount(); i < dir.getNameCount(); i++) {
-                    sbf.append(dir.getName(i).toString() + File.separator);
-                }
-                dirsStrRelativePath.add(sbf.toString());
-                return super.preVisitDirectory(dir, attrs);
-            }
-
-            @Override
-            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
-                    throws IOException {
-
-
-                FilesTraverse.LoadFileToFilesSpaceShip(spaceShip1, file.toFile());
-
-
-//                StringBuffer sbf = new StringBuffer();
-//                for (int i = prePath.getNameCount(); i < file.getNameCount(); i++) {
-//                    sbf.append(file.getName(i).toString() + File.separator);
-//                }
-//                filesStrRelativePath.add(sbf.toString());
-
-//                InetSocketAddress hostAddress = new InetSocketAddress(IPTOLISTEN, 8090);
-//                SocketChannel client = SocketChannel.open(hostAddress);
-
-
-                //////////////
-
-                File f = file.toFile();
-                System.out.println("filename:" + f.getName());
-                if (f.getName().equals(".DS_Store")) {
-                    System.out.println("file is escape");
-
-                    return super.visitFile(file, attrs);
-                }
-                InputStream is = new FileInputStream(f);
-
-                byte[] bytes = IOUtils.readNBytes(is, is.available());
-
-                is.close();
-
-
-                ByteBuffer buffer = ByteBuffer.wrap(bytes);
-                System.out.println("buffer.length" + buffer.array().length);
-                if (client != null) {
-                    client.write(buffer);
-                }
-                buffer.clear();
-
-//                client.close();
-//                System.out.println("client-is-connected?" + client.isConnected());
-
-
-                return super.visitFile(file, attrs);
-            }
-        };
-
-
-        //region getcurrent path
-        String path = Paths.get("").toAbsolutePath().toString();
-        System.out.println("Working Directory = " + path);
-        //endregion
-
-        java.nio.file.Files.walkFileTree(PATH, finder);
-
-        //reigon dirToSend
-        for (String s : dirsStrRelativePath) {
-            String dirToSend = path + File.separator + s;
-            System.err.println(s);
-        }
-        System.out.println("-----========---------=========");
-        for (String s : filesStrRelativePath) {
-            String filesToSend = path + File.separator + s;
-            System.out.println(s);
-        }
-        //endregion
-
-
-        if (client != null) {
-
-
-            ObjectOutputStream oos = new ObjectOutputStream(client.socket().getOutputStream());
-            oos.writeObject(spaceShip1);
-            oos.close();
-
-
-        }
-
+        FilesSpaceShip fullLoad = getSpaceShipWithFullLoad();
+        FireTheSpaceShip(fullLoad);
 
     }
 
@@ -154,9 +52,7 @@ public class FilesTraverse {
     }
 
 
-
     /**
-     *
      * @param spaceShip
      * @param file
      */
@@ -166,10 +62,59 @@ public class FilesTraverse {
         passenger.setFile(file);
         passenger.setFileName(file.getName());
         passenger.setFilePath("java");
-
-
         spaceShip.getFileSendedBySockets().add(passenger);
 
+    }
+
+
+    /**
+     * 遍历指定文件夹，将所有文件转载到 FilesSpaceShip
+     *
+     * @return 转载了文件序列化到SpaceShip
+     */
+    private static FilesSpaceShip getSpaceShipWithFullLoad() throws IOException {
+        FilesSpaceShip spaceShip1 = new FilesSpaceShip();
+        SimpleFileVisitor<Path> finder = new SimpleFileVisitor<Path>() {
+            @Override
+            public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs)
+                    throws IOException {
+                StringBuffer sbf = new StringBuffer();
+//                for (int i = Common.PREPATH.getNameCount(); i < dir.getNameCount(); i++) {
+//                    sbf.append(dir.getName(i).toString() + File.separator);
+//                }
+//            dirsStrRelativePath.add(sbf.toString());
+                return super.preVisitDirectory(dir, attrs);
+            }
+
+            @Override
+            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
+                    throws IOException {
+
+                FilesTraverse.LoadFileToFilesSpaceShip(spaceShip1, file.toFile());
+                return super.visitFile(file, attrs);
+            }
+        };
+        walkFileTree(Common.PATH, finder);
+        return spaceShip1;
+    }
+
+
+    /**
+     * 发送序列化对象集
+     * 🔥🔥🔥🔥🔥🔥🔥🔥
+     *
+     * @throws IOException
+     */
+    private static void FireTheSpaceShip(FilesSpaceShip obj) throws IOException {
+        Socket sock = new Socket(Common.IPTOLISTEN, Common.PORT);
+
+        ObjectOutputStream oos = new ObjectOutputStream(sock.getOutputStream());
+        System.out.println(obj.hashCode() + "hashCode is client-sender");
+        System.out.println(obj.getFileSendedBySockets().size() + "this is send size");
+        oos.writeObject(obj);
+        oos.close();
+
+        System.out.println("Connection ended");
     }
 
 

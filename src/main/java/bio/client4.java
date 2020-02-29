@@ -11,7 +11,7 @@ public class client4 {
 //            BufferedReader br = null;
             FileInputStream fis = null;
             try {
-                Socket echoSocket = new Socket("127.0.0.1", 5223);
+                Socket echoSocket = new Socket("127.0.0.1", 8090);
                 System.out.println("Connected to server");
                 File f =new  File(FROMFILE);
                 FileReader r = new FileReader(f);

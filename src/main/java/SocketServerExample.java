@@ -1,6 +1,5 @@
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
@@ -10,17 +9,15 @@ import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import bean.FilesSpaceShip;
+
 public class SocketServerExample {
 
-//    private final static String IPTOLISTEN = "127.0.0.1";
-        private final static String IPTOLISTEN = "192.168.137.173";
-//        private final static String IPTOLISTEN = "192.168.31.223";
     private Selector selector;
     private Map<SocketChannel, List<byte[]>> dataMapper;
     private InetSocketAddress listenAddress;
@@ -32,7 +29,7 @@ public class SocketServerExample {
             @Override
             public void run() {
                 try {
-                    new SocketServerExample(IPTOLISTEN, 8090).startServer();
+                    new SocketServerExample(Common.IPTOLISTEN, Common.PORT).startServer();
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (ClassNotFoundException e) {
@@ -41,24 +38,7 @@ public class SocketServerExample {
 
             }
         };
-
-//		Runnable client = new Runnable() {
-//			@Override
-//			public void run() {
-//				 try {
-//					 new SocketClientExample().startClient();
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//				} catch (InterruptedException e) {
-//					e.printStackTrace();
-//				}
-//
-//			}
-//		};
         new Thread(server).start();
-//       new Thread(client, "client-A").start();
-//       new Thread(client, "client-B").start();
-
     }
 
     public SocketServerExample(String address, int port) throws IOException {
@@ -113,7 +93,8 @@ public class SocketServerExample {
         channel.configureBlocking(false);
         Socket socket = channel.socket();
         SocketAddress remoteAddr = socket.getRemoteSocketAddress();
-        System.out.println("Connected to client: " + remoteAddr + " local address" + socket.getLocalSocketAddress());
+        System.out.println("Connected to client: " + remoteAddr + " local address"
+                + socket.getLocalSocketAddress());
 
         // register channel with selector for further IO
         dataMapper.put(channel, new ArrayList<byte[]>());
@@ -123,66 +104,33 @@ public class SocketServerExample {
     //read from the socket channel
     private void read(SelectionKey key) throws IOException, ClassNotFoundException {
         SocketChannel channel = (SocketChannel) key.channel();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
 
+                ObjectInputStream ois = null;
+                try {
+                    ois = new ObjectInputStream(channel.socket().getInputStream());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//
-//                ObjectInputStream ois = null;
-//                try {
-//                    ois = new ObjectInputStream(channel.socket().getInputStream());
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//
-//                String s = null;
-//                try {
-//                    s = (String) ois.readObject();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                } catch (ClassNotFoundException e) {
-//                    e.printStackTrace();
-//                }
-//                System.out.println(s);
-//            }
-//        }).start();
+                FilesSpaceShip obj = null;
+                try {
+                    obj = (FilesSpaceShip) ois.readObject();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+                System.out.println(obj);
+                System.out.println(obj.hashCode()+"hashCode is ");
+            }
+        }).start();
 
 
         ByteBuffer buffer = ByteBuffer.allocate(1024);
         int numRead = -1;
         numRead = channel.read(buffer);//读取channel数据到buffer
-
-        if (numRead == -1) {
-            this.dataMapper.remove(channel);
-            Socket socket = channel.socket();
-            SocketAddress remoteAddr = socket.getRemoteSocketAddress();
-            System.out.println("Connection closed by client: " + remoteAddr);
-            channel.close();
-            key.cancel();
-//            System.out.println("combineByteLength"+combineByte.length);
-//            System.out.println("Got: " + new String(combineByte));
-
-            File file = new File(
-                    "/Users/linjiejun/Documents/linwork/iproject/java/" +
-                            "IpGuardKiller/doc2/OneFile-net.txt");
-            FileOutputStream fos = new FileOutputStream(file);
-//            byte[] outByte = Arrays.copyOfRange(combineByte, 0, combineByte.length - 126);
-            byte[] outByte = this.combineByte;
-
-            fos.write(outByte);
-            fos.flush();
-            fos.close();
-            System.out.println(outByte.length+"server_file_byte_size");
-            this.combineByte = new byte[0];
-            return;
-        }
-
-        byte[] data = new byte[numRead];
-        System.arraycopy(buffer.array(), 0, data, 0, numRead);
-//        dataFromNet.append(new String(data));
-//        System.out.println("Got: " + new String(data));
-
-        combineByte = Utils.combineByteArrays(combineByte, data);
     }
 }

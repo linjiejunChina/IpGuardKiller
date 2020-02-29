@@ -13,7 +13,7 @@ public class client3 {
         int bytesRead;
         int current = 0;
         // localhost for testing
-        Socket sock = new Socket("127.0.0.1", 13267);
+        Socket sock = new Socket("127.0.0.1", 8090);
         System.out.println("Connecting...");
         // receive file
         byte[] mybytearray = new byte[filesize];
