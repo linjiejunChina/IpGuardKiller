@@ -23,8 +23,15 @@ public class server4 {
         System.out.println(ship.hashCode() + "server-hash code is ");
 
         for (SpaceShipPassenger fileSendedBySocket : ship.getFileSendedBySockets()) {
-            System.out.println("file name is " + fileSendedBySocket.getFile().getName() + "size is "
-                    + getFileSizeExceptDirectory(fileSendedBySocket.getFile()));
+
+            System.out.println(fileSendedBySocket.getFileData().length);
+            File file = new File("/Users/linjiejun/Documents/linwork/iproject/java/IpGuardKiller/doc"
+                    + "/" + fileSendedBySocket.getFileName());
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+            fileOutputStream.write(fileSendedBySocket.getFileData());
+            fileOutputStream.flush();
+            fileOutputStream.close();
+
 
         }
 
@@ -34,12 +41,5 @@ public class server4 {
         socket.close();
     }
 
-    private static int getFileSizeExceptDirectory(File file) throws IOException {
-        if (!file.isDirectory()) {
-            return new FileInputStream(file).available();
-        } else {
-            return -1;
-        }
-    }
 
 }
