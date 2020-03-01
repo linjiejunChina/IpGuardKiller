@@ -1,17 +1,17 @@
-package bio;
-
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 import bean.FilesSpaceShip;
 import bean.SpaceShipPassenger;
 
-import static bio.Utils.TOFILE;
-
-public class server4 {
+public class BIO_server4 {
     public static void main(String[] args) throws ClassNotFoundException, IOException {
-         long FileSize = 0;
+        long FileSize = 0;
         ServerSocket serverSocket = new ServerSocket(8090);
         System.out.println("Server_started...");
         Socket socket = serverSocket.accept();
@@ -37,8 +37,8 @@ public class server4 {
         }
         long endTime = System.nanoTime(); //获取结束时间
         System.out.println((endTime - startTime) + "nanoTime");
-        System.out.println("程序运行时间： " + (endTime - startTime)/1000/1000/1000 + "seconds");
-        System.out.println("程序大小" + FileSize / 1024/1024 + "MB");
+        System.out.println("程序运行时间： " + (endTime - startTime) / 1000 / 1000 / 1000 + "seconds");
+        System.out.println("程序大小" + FileSize / 1024 / 1024 + "MB");
         objIs.close();
         is.close();
         socket.close();
