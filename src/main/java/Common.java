@@ -3,9 +3,9 @@ import java.nio.file.Paths;
 
 public class Common {
 //    public final static String IPTOLISTEN = "192.168.31.223";//house wifi
-    public final static String IPTOLISTEN = "192.168.2.1";//compony mac ether
+    public  static String IPTOLISTEN = "192.168.2.1";//compony mac ether
 
-    public final static int PORT= 8090;
+    public  static int PORT= 8090;
 
 
     public static Path PATH = Paths.get("D:\\ljj\\npt\\source\\sdkservice\\");
