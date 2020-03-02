@@ -2,7 +2,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class Common {
-    public final static String IPTOLISTEN = "192.168.31.223";
+//    public final static String IPTOLISTEN = "192.168.31.223";//house wifi
+    public final static String IPTOLISTEN = "192.168.2.1";//compony mac ether
+
     public final static int PORT= 8090;
 
 
