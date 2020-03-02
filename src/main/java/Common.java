@@ -8,8 +8,9 @@ public class Common {
     public final static int PORT= 8090;
 
 
-    public static Path PATH = Paths.get("/Users/linjiejun/Documents/linwork/iproject/java/IpGuardKiller");
-//    public static Path PREPATH = Paths.get("C:\\Users\\lin\\Desktop");
+    public static Path PATH = Paths.get("D:\\ljj\\npt\\source\\sdkservice\\");
+    public static String HEAD_OF_PATH_TO_CUT_OFF = "D:\\ljj\\npt\\source\\";
+
 
     public static String FileToSKip = ".DS_Store";
 
