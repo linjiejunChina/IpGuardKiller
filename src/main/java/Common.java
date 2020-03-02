@@ -16,4 +16,13 @@ public class Common {
 
     public static String PathToStoreDirectory = "/Users/linjiejun/Documents/linwork/iproject/java/IpGuardKiller/doc/";
 
+
+    public static void verifyArgs(String[] args,String hintIfFailed) {
+        if (args == null || args.length < 1) {
+            System.out.println("args is null ");
+            System.out.println(hintIfFailed);
+            return;
+        }
+    }
+
 }

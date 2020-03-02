@@ -1,28 +1,11 @@
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectOutputStream;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.nio.ByteBuffer;
-import java.nio.channels.ServerSocketChannel;
-import java.nio.channels.SocketChannel;
-import java.nio.file.FileAlreadyExistsException;
-import java.nio.file.FileVisitResult;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.SimpleFileVisitor;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.util.ArrayList;
-import java.util.List;
-
-import bean.SpaceShipPassenger;
 import bean.FilesSpaceShip;
-import sun.misc.IOUtils;
+import bean.SpaceShipPassenger;
+
+import java.io.*;
+import java.net.Socket;
+import java.nio.channels.SocketChannel;
+import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
 
 import static java.nio.file.Files.walkFileTree;
 
@@ -33,24 +16,18 @@ import static java.nio.file.Files.walkFileTree;
  * SimpleFileVisitor<Path> finder = new SimpleFileVisitor<Path>(){};
  */
 public class FilesTraverse {
-    static SocketChannel client;
+
+
+    private static int port;
+    private static String ip;
+    private static String from;
+
 
     public static void main(String[] args) throws IOException {
-
+        Common.verifyArgs(args, "ip port pathToStoreFile in sequence");
+        turnArgsIntoField(args);
         FilesSpaceShip fullLoad = getSpaceShipWithFullLoad();
         FireTheSpaceShip(fullLoad);
-
-    }
-
-    private static void createDir(String strPath) {
-        try {
-            Path newDir = Files.createDirectory(Paths.get(strPath));
-        } catch (FileAlreadyExistsException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
     }
 
 
@@ -63,7 +40,7 @@ public class FilesTraverse {
         SpaceShipPassenger passenger = new SpaceShipPassenger();
         passenger.setFile(file);
         passenger.setFileName(file.getName());
-        passenger.setFilePath(getInterestFilePath(file.getCanonicalPath(),Common.HEAD_OF_PATH_TO_CUT_OFF));
+        passenger.setFilePath(getInterestFilePath(file.getCanonicalPath(), Common.HEAD_OF_PATH_TO_CUT_OFF));
         passenger.setFileData(suckBytesFromFile(file));
         spaceShip.getFileSendedBySockets().add(passenger);
     }
@@ -78,17 +55,6 @@ public class FilesTraverse {
         FilesSpaceShip spaceShip1 = new FilesSpaceShip();
         SimpleFileVisitor<Path> finder = new SimpleFileVisitor<Path>() {
             @Override
-            public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs)
-                    throws IOException {
-                StringBuffer sbf = new StringBuffer();
-//                for (int i = Common.PREPATH.getNameCount(); i < dir.getNameCount(); i++) {
-//                    sbf.append(dir.getName(i).toString() + File.separator);
-//                }
-//            dirsStrRelativePath.add(sbf.toString());
-                return super.preVisitDirectory(dir, attrs);
-            }
-
-            @Override
             public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
                     throws IOException {
                 System.out.println(getInterestFilePath(file.toFile().getCanonicalPath(), Common.HEAD_OF_PATH_TO_CUT_OFF));
@@ -96,7 +62,7 @@ public class FilesTraverse {
                 return super.visitFile(file, attrs);
             }
         };
-        walkFileTree(Common.PATH, finder);
+        walkFileTree(Paths.get(from), finder);
         return spaceShip1;
     }
 
@@ -108,7 +74,7 @@ public class FilesTraverse {
      * @throws IOException
      */
     private static void FireTheSpaceShip(FilesSpaceShip obj) throws IOException {
-        Socket sock = new Socket(Common.IPTOLISTEN, Common.PORT);
+        Socket sock = new Socket(ip, port);
         ObjectOutputStream oos = new ObjectOutputStream(sock.getOutputStream());
         System.out.println(obj.hashCode() + "hashCode is client-sender");
         System.out.println(obj.getFileSendedBySockets().size() + "this is send size");
@@ -125,11 +91,16 @@ public class FilesTraverse {
         return transferStation;
     }
 
-    private static String getInterestFilePath(String originPath,String headOfPathToCutOff) {
+    private static String getInterestFilePath(String originPath, String headOfPathToCutOff) {
         if (!headOfPathToCutOff.endsWith(File.separator)) {
             headOfPathToCutOff += File.separator;
         }
         return originPath.replace(headOfPathToCutOff, "");
     }
 
+    private static void turnArgsIntoField(String[] args) {
+        ip = args[0];
+        port = Integer.parseInt(args[1]);
+        from = args[2];
+    }
 }
