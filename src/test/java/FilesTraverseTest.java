@@ -23,4 +23,15 @@ public class FilesTraverseTest {
                 FilesTraverse.getInterestFilePath("D:\\ljj\\npt\\source\\sdkservice\\test.txt"
                         ,PathHelper.exclueLastDirInPath("D:\\ljj\\npt\\source\\sdkservice")));
     }
+    @Test
+    public void getInterestFilePathNormalWin2() {
+        assertEquals("sdkservice\\test.txt",
+                FilesTraverse.getInterestFilePath("D:\\ljj\\npt\\source\\sdkservice\\test.txt"
+                        ,"D:\\ljj\\npt\\source\\"));
+    }
+    @Test
+    public void stringReplaceWin() {
+        assertEquals("sdkservice\\test.txt",
+                "D:\\ljj\\npt\\source\\sdkservice\\test.txt".replace("D:\\ljj\\npt\\source\\", ""));
+    }
 }
