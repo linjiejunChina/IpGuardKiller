@@ -40,7 +40,8 @@ public class FilesTraverse {
         SpaceShipPassenger passenger = new SpaceShipPassenger();
         passenger.setFile(file);
         passenger.setFileName(file.getName());
-        passenger.setFilePath(getInterestFilePath(file.getCanonicalPath(),PathHelper.exclueLastDirInPath(from)));
+        passenger.setFilePath(getInterestFilePath(file.getCanonicalPath(), PathHelper.exclueLastDirInPath(from)));
+        System.out.println("Interest Path is " + passenger.getFilePath());
         passenger.setFileData(suckBytesFromFile(file));
         spaceShip.getFileSendedBySockets().add(passenger);
     }
@@ -57,7 +58,6 @@ public class FilesTraverse {
             @Override
             public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
                     throws IOException {
-                System.out.println(file.toFile().getCanonicalPath());
                 FilesTraverse.LoadFileToFilesSpaceShip(spaceShip1, file.toFile());
                 return super.visitFile(file, attrs);
             }
@@ -90,7 +90,7 @@ public class FilesTraverse {
         return transferStation;
     }
 
-     static String getInterestFilePath(String originPath, String headOfPathToCutOff) {
+    static String getInterestFilePath(String originPath, String headOfPathToCutOff) {
         if (!headOfPathToCutOff.endsWith(File.separator)) {
             headOfPathToCutOff += File.separator;
         }

@@ -86,7 +86,6 @@ public class BIO_server4 {
         for (SpaceShipPassenger fileSendedBySocket : ship.getFileSendedBySockets()) {
             System.out.println(fileSendedBySocket.getFileData().length);
             File file = new File(receiveSizeAbsPath(to, fileSendedBySocket.getFilePath()));
-//            File file = new File(receiveSizeAbsPath(Common.PathToStoreDirectory, fileSendedBySocket.getFilePath()));
             createFileOrDirectoryIfNeed(file);
             FileOutputStream fileOutputStream = new FileOutputStream(file);
             fileOutputStream.write(fileSendedBySocket.getFileData());
@@ -110,5 +109,9 @@ public class BIO_server4 {
         ServerSocket serverSocket = new ServerSocket(port);
         System.out.println(Inet4Address.getLocalHost().getHostAddress()+" Server_started...");
         return serverSocket.accept();
+    }
+
+    private static void create_tmp_Dir4SvnNeed() {
+
     }
 }
