@@ -11,6 +11,15 @@ public class SpaceShipPassenger implements Serializable {
     String fileName;//文件名
     File file;//文件真实数据
     byte[] fileData;
+    boolean isDirectory;
+
+    public boolean isDirectory() {
+        return isDirectory;
+    }
+
+    public void setDirectory(boolean directory) {
+        isDirectory = directory;
+    }
 
     public byte[] getFileData() {
         return fileData;

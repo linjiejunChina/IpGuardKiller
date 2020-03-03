@@ -3,7 +3,6 @@ import bean.SpaceShipPassenger;
 
 import java.io.*;
 import java.net.Socket;
-import java.nio.channels.SocketChannel;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 
@@ -15,7 +14,7 @@ import static java.nio.file.Files.walkFileTree;
  * java.nio.file.FilesSpaceShip.walkFileTree(PATH, finder);
  * SimpleFileVisitor<Path> finder = new SimpleFileVisitor<Path>(){};
  */
-public class FilesTraverse {
+public class BIO_Client4 {
 
 
     private static int port;
@@ -42,7 +41,10 @@ public class FilesTraverse {
         passenger.setFileName(file.getName());
         passenger.setFilePath(getInterestFilePath(file.getCanonicalPath(), PathHelper.exclueLastDirInPath(from)));
         System.out.println("Interest Path is " + passenger.getFilePath());
-        passenger.setFileData(suckBytesFromFile(file));
+        passenger.setDirectory(file.isDirectory());
+        if (!file.isDirectory()) {
+            passenger.setFileData(suckBytesFromFile(file));
+        }
         spaceShip.getFileSendedBySockets().add(passenger);
     }
 
@@ -56,9 +58,15 @@ public class FilesTraverse {
         FilesSpaceShip spaceShip1 = new FilesSpaceShip();
         SimpleFileVisitor<Path> finder = new SimpleFileVisitor<Path>() {
             @Override
+            public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+                BIO_Client4.LoadFileToFilesSpaceShip(spaceShip1,dir.toFile());
+                return super.preVisitDirectory(dir, attrs);
+            }
+
+            @Override
             public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
                     throws IOException {
-                FilesTraverse.LoadFileToFilesSpaceShip(spaceShip1, file.toFile());
+                BIO_Client4.LoadFileToFilesSpaceShip(spaceShip1, file.toFile());
                 return super.visitFile(file, attrs);
             }
         };

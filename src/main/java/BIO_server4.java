@@ -84,8 +84,17 @@ public class BIO_server4 {
     private static long spaceShipLanding(FilesSpaceShip ship) throws IOException {
         long fileSize = 0;
         for (SpaceShipPassenger fileSendedBySocket : ship.getFileSendedBySockets()) {
-            System.out.println(fileSendedBySocket.getFileData().length);
+
             File file = new File(receiveSizeAbsPath(to, fileSendedBySocket.getFilePath()));
+
+            System.out.println(file.getCanonicalPath()+"is dir "+fileSendedBySocket.isDirectory());
+            if (fileSendedBySocket.isDirectory()) {
+//                System.err.println("hehehe=="+file.getCanonicalPath());
+                createEmptyDirIfNotExists(file.getCanonicalFile());
+                continue;
+            }
+
+//            System.out.println(fileSendedBySocket.getFileData().length);
             createFileOrDirectoryIfNeed(file);
             FileOutputStream fileOutputStream = new FileOutputStream(file);
             fileOutputStream.write(fileSendedBySocket.getFileData());
@@ -113,5 +122,14 @@ public class BIO_server4 {
 
     private static void create_tmp_Dir4SvnNeed() {
 
+    }
+
+    private static boolean createEmptyDirIfNotExists(File file) throws IOException {
+//        if (file.isDirectory()&&!file.exists()) {////这句是他娘的坑爹
+            boolean mkdir = file.mkdir();
+            System.out.println(mkdir+"hhh"+file.getCanonicalPath());
+            return mkdir;
+//        }
+//        return false;
     }
 }
