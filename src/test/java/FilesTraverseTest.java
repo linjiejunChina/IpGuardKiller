@@ -17,18 +17,30 @@ public class FilesTraverseTest {
                         ,PathHelper.exclueLastDirInPath("/Users/linjiejun/Documents/linwork/iproject/java/IpGuardKiller/doc/")));
     }
 
+    /**
+     * faild in mac
+     * success in win
+     */
     @Test
     public void getInterestFilePathNormalWin() {
         assertEquals("sdkservice\\test.txt",
                 FilesTraverse.getInterestFilePath("D:\\ljj\\npt\\source\\sdkservice\\test.txt"
                         ,PathHelper.exclueLastDirInPath("D:\\ljj\\npt\\source\\sdkservice")));
     }
+    /**
+     * faild in mac
+     * success in win
+     */
     @Test
     public void getInterestFilePathNormalWin2() {
         assertEquals("sdkservice\\test.txt",
                 FilesTraverse.getInterestFilePath("D:\\ljj\\npt\\source\\sdkservice\\test.txt"
                         ,"D:\\ljj\\npt\\source\\"));
     }
+    /**
+     * faild in mac
+     * success in win
+     */
     @Test
     public void stringReplaceWin() {
         assertEquals("sdkservice\\test.txt",
