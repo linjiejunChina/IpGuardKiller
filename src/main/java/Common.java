@@ -9,7 +9,7 @@ public class Common {
 
 
     public static Path PATH = Paths.get("D:\\ljj\\npt\\source\\sdkservice\\");
-    public static String HEAD_OF_PATH_TO_CUT_OFF = "D:\\ljj\\npt\\source\\";
+//    public static String HEAD_OF_PATH_TO_CUT_OFF = "D:\\ljj\\npt\\source\\";
 
 
     public static String FileToSKip = ".DS_Store";
