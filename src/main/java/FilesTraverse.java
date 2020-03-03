@@ -76,8 +76,7 @@ public class FilesTraverse {
     private static void FireTheSpaceShip(FilesSpaceShip obj) throws IOException {
         Socket sock = new Socket(ip, port);
         ObjectOutputStream oos = new ObjectOutputStream(sock.getOutputStream());
-        System.out.println(obj.hashCode() + "hashCode is client-sender");
-        System.out.println(obj.getFileSendedBySockets().size() + "this is send size");
+        System.out.println("hashCode is client-sender" + obj.hashCode());
         oos.writeObject(obj);
         oos.close();
         System.out.println("Connection ended");

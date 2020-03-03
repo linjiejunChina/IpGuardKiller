@@ -32,7 +32,7 @@ public class BIO_server4 {
         FilesSpaceShip ship = (FilesSpaceShip) objIs.readObject();
         long flytime = System.nanoTime();
 
-        long fileSize = spaceShipLanding(ship);
+        long fileSize = spaceShipLanding(ship);System.out.println(ship.hashCode());
 
         long landingTime = System.nanoTime(); //获取结束时间
 
