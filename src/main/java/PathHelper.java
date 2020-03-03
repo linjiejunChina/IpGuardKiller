@@ -10,4 +10,9 @@ public class PathHelper {
         String[] split = path.split(pattern);
         return split[split.length - 1];
     }
+
+    static String exclueLastDirInPath(String path) {
+        int endIdx = path.indexOf(lastDirInPath(path));
+        return path.substring(0, endIdx);
+    }
 }
