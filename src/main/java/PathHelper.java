@@ -29,9 +29,47 @@ public class PathHelper {
     }
 
     static String getOneOfPathByIdx(int idx, String[] pathSeparated) {
-        if (pathSeparated == null||idx<0) {
+        if (pathSeparated == null || idx < 0) {
             return "";
         }
         return pathSeparated[idx];
+    }
+
+    /**
+     * 需要夸平台测试
+     * @param path
+     * @return
+     */
+    static String transSeparatorToLocalFileSystem(String path) {
+        if (isWinFileSystem(path)) {
+            path = path.replace("\\", File.separator);
+        } else if (isUnixLikeFileSystem(path)) {
+            path = path.replace("/", File.separator);
+        } else {
+            path = "";
+        }
+        return path;
+    }
+
+    static boolean isWinFileSystem(String path) {
+        if (path == null) {
+            return false;
+        }
+        if (path.contains("\\") && !path.contains("/")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    static boolean isUnixLikeFileSystem(String path) {
+        if (path == null) {
+            return false;
+        }
+        if (path.contains("/") && !path.contains("\\") && !path.contains(":")) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
