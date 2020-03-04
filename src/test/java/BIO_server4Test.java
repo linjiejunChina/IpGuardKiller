@@ -31,7 +31,7 @@ public class BIO_server4Test {
      */
     @Test
     public void receiveSizeAbsPathNormal_win() throws PathHelper.NotNormalPathException {
-        assertEquals("D:\\ljj\\npt\\source123\\sdkservice123\\\\osd\\fdsf\\"
+        assertEquals("D:\\ljj\\npt\\source123\\sdkservice123\\osd\\fdsf\\"
                 ,BIO_server4.receiveSizeAbsPath("D:\\ljj\\npt\\source123\\sdkservice123\\","/osd/fdsf"));
     }
 
@@ -42,7 +42,7 @@ public class BIO_server4Test {
      */
     @Test
     public void receiveSizeAbsPathNormal2_win() throws PathHelper.NotNormalPathException {
-        assertEquals("D:\\ljj\\npt\\source123\\sdkservice123\\\\osd\\fdsf\\"
+        assertEquals("D:\\ljj\\npt\\source123\\sdkservice123\\osd\\fdsf\\"
                 ,BIO_server4.receiveSizeAbsPath("D:\\ljj\\npt\\source123\\sdkservice123\\","\\osd\\fdsf"));
     }
 }
