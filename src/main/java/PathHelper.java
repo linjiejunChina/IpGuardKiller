@@ -97,4 +97,16 @@ public class PathHelper {
 
     }
 
+
+    static String cutSeparatorOfPathHead(String path) throws NotNormalPathException {
+        if (path == null||path.equals("")) {
+            throw new NotNormalPathException();
+        }
+        if (path.startsWith(File.separator)&&path.length()>1) {
+            path = path.substring(1);
+        }
+        return path;
+    }
+
+
 }

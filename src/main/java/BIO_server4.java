@@ -64,7 +64,8 @@ public class BIO_server4 {
          directory = PathHelper.transSeparatorToLocalFileSystem(directory);
 
 
-        String s = prePath + directory;
+
+        String s = prePath + PathHelper.cutSeparatorOfPathHead(directory);
          System.out.println("path to store in server" + s);
         return s;
     }
