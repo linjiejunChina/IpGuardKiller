@@ -23,7 +23,8 @@ public class BIO_server4 {
         Common.verifyArgs(args, " port pathToStoreFile  in sequence");
         turnArgsIntoField(args);
 
-        Socket socket = initServerListener(port);System.out.println("client connected");
+        Socket socket = initServerListener(port);
+        System.out.println("client connected");
 
         long launchTime = System.nanoTime();   //获取开始时间
         InputStream is = socket.getInputStream();
@@ -32,7 +33,8 @@ public class BIO_server4 {
         FilesSpaceShip ship = (FilesSpaceShip) objIs.readObject();
         long flytime = System.nanoTime();
 
-        long fileSize = spaceShipLanding(ship);System.out.println(ship.hashCode());
+        long fileSize = spaceShipLanding(ship);
+        System.out.println(ship.hashCode());
 
         long landingTime = System.nanoTime(); //获取结束时间
 
@@ -49,6 +51,13 @@ public class BIO_server4 {
     }
 
 
+    /**
+     * 路径还是要改下，符合夸平台的需要。
+     *
+     * @param prePath
+     * @param directory
+     * @return
+     */
     private static String receiveSizeAbsPath(String prePath, String directory) {
         if (!prePath.endsWith("/")) {
             prePath = prePath + "/";
@@ -87,7 +96,7 @@ public class BIO_server4 {
 
             File file = new File(receiveSizeAbsPath(to, fileSendedBySocket.getFilePath()));
 
-            System.out.println(file.getCanonicalPath()+"is dir "+fileSendedBySocket.isDirectory());
+            System.out.println(file.getCanonicalPath() + "is dir " + fileSendedBySocket.isDirectory());
             if (fileSendedBySocket.isDirectory()) {
 //                System.err.println("hehehe=="+file.getCanonicalPath());
                 createEmptyDirIfNotExists(file.getCanonicalFile());
@@ -116,7 +125,7 @@ public class BIO_server4 {
 
     private static Socket initServerListener(int port) throws IOException {
         ServerSocket serverSocket = new ServerSocket(port);
-        System.out.println(Inet4Address.getLocalHost().getHostAddress()+" Server_started...");
+        System.out.println(Inet4Address.getLocalHost().getHostAddress() + " Server_started...");
         return serverSocket.accept();
     }
 
@@ -126,9 +135,9 @@ public class BIO_server4 {
 
     private static boolean createEmptyDirIfNotExists(File file) throws IOException {
 //        if (file.isDirectory()&&!file.exists()) {////这句是他娘的坑爹
-            boolean mkdir = file.mkdir();
-            System.out.println(mkdir+"hhh"+file.getCanonicalPath());
-            return mkdir;
+        boolean mkdir = file.mkdir();
+        System.out.println(mkdir + "hhh" + file.getCanonicalPath());
+        return mkdir;
 //        }
 //        return false;
     }
