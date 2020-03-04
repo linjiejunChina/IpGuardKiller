@@ -325,4 +325,109 @@ public class PathHelperTest {
     }
 
 
+    //transSeparatorToLocalFileSystem
+
+
+    @Test(expected = PathHelper.NotNormalPathException.class)
+    public void transSeparatorToLocalFileSystemNull() throws PathHelper.NotNormalPathException {
+        PathHelper.transSeparatorToLocalFileSystem(null);
+    }
+
+    @Test(expected = PathHelper.NotNormalPathException.class)
+    public void transSeparatorToLocalFileSystemEmpty() throws PathHelper.NotNormalPathException {
+        PathHelper.transSeparatorToLocalFileSystem("");
+
+    }
+
+    /**
+     * fail in win
+     * success in mac
+     * @throws PathHelper.NotNormalPathException
+     */
+    @Test
+    public void transSeparatorToLocalFileSystemNormal_mac() throws PathHelper.NotNormalPathException {
+        assertEquals("/ljj/npt/source.123/", PathHelper.transSeparatorToLocalFileSystem("\\ljj\\npt\\source.123\\"));
+    }
+
+    /**
+     * fail in win
+     * success in mac
+     * @throws PathHelper.NotNormalPathException
+     */
+    @Test
+    public void transSeparatorToLocalFileSystemNormal2_mac() throws PathHelper.NotNormalPathException {
+        assertEquals("/ljj/npt/source.123/", PathHelper.transSeparatorToLocalFileSystem("\\ljj\\npt\\source.123"));
+    }
+
+    /**
+     * fail in win
+     * success in mac
+     * @throws PathHelper.NotNormalPathException
+     */
+    @Test
+    public void transSeparatorToLocalFileSystemNormal3_mac() throws PathHelper.NotNormalPathException {
+        assertEquals("ljj/npt/source.123/", PathHelper.transSeparatorToLocalFileSystem("ljj\\npt\\source.123"));
+    }
+
+    /**
+     * fail in win
+     * success in mac
+     * @throws PathHelper.NotNormalPathException
+     */
+    @Test
+    public void transSeparatorToLocalFileSystemNormal4_mac() throws PathHelper.NotNormalPathException {
+        assertEquals("ljj/npt/source.123/", PathHelper.transSeparatorToLocalFileSystem("ljj/npt/source.123"));
+    }
+
+    @Test(expected = PathHelper.NotNormalPathException.class)
+    public void transSeparatorToLocalFileSystemFreak_mac() throws PathHelper.NotNormalPathException {
+        PathHelper.transSeparatorToLocalFileSystem("ljj/npt\\source.123");
+    }
+
+
+    /**
+     * fail in mac
+     * success in win
+     * @throws PathHelper.NotNormalPathException
+     */
+    @Test
+    public void transSeparatorToLocalFileSystemNormal_win() throws PathHelper.NotNormalPathException {
+        assertEquals("\\jj\\npt\\source.123\\", PathHelper.transSeparatorToLocalFileSystem("/ljj/npt/source.123/"));
+    }
+
+    /**
+     * fail in mac
+     * success in win
+     * @throws PathHelper.NotNormalPathException
+     */
+    @Test
+    public void transSeparatorToLocalFileSystemNormal2_win() throws PathHelper.NotNormalPathException {
+        assertEquals("\\ljj\\npt\\source.123\\", PathHelper.transSeparatorToLocalFileSystem("/ljj/npt/source.123"));
+    }
+
+    /**
+     * fail in mac
+     * success in win
+     * @throws PathHelper.NotNormalPathException
+     */
+    @Test
+    public void transSeparatorToLocalFileSystemNormal3_win() throws PathHelper.NotNormalPathException {
+        assertEquals("ljj\\npt\\source.123\\", PathHelper.transSeparatorToLocalFileSystem("ljj/npt/source.123"));
+    }  /**
+     * fail in mac
+     * success in win
+     * @throws PathHelper.NotNormalPathException
+     */
+    @Test
+    public void transSeparatorToLocalFileSystemNormal4_win() throws PathHelper.NotNormalPathException {
+        assertEquals("ljj\\npt\\source.123\\", PathHelper.transSeparatorToLocalFileSystem("ljj\\npt\\source.123"));
+    }
+
+
+    @Test(expected = PathHelper.NotNormalPathException.class)
+    public void transSeparatorToLocalFileSystemFreak_win() throws PathHelper.NotNormalPathException {
+        PathHelper.transSeparatorToLocalFileSystem("ljj/npt\\source.123");
+    }
+
+
 }

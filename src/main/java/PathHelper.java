@@ -1,4 +1,5 @@
 import java.io.File;
+import java.lang.reflect.Field;
 import java.util.regex.Pattern;
 
 public class PathHelper {
@@ -40,15 +41,15 @@ public class PathHelper {
      * @param path
      * @return
      */
-    static String transSeparatorToLocalFileSystem(String path) {
+    static String transSeparatorToLocalFileSystem(String path) throws NotNormalPathException {
         if (isWinFileSystem(path)) {
             path = path.replace("\\", File.separator);
         } else if (isUnixLikeFileSystem(path)) {
             path = path.replace("/", File.separator);
         } else {
-            path = "";
+            throw new NotNormalPathException();
         }
-        return path;
+        return path+appendSeparatorIfNeed(path);
     }
 
     static boolean isWinFileSystem(String path) {
@@ -72,4 +73,18 @@ public class PathHelper {
             return false;
         }
     }
+
+    static class NotNormalPathException extends Exception {
+    }
+
+    private static String appendSeparatorIfNeed(String path) {
+        if (path == null) {
+            return "";
+        }
+        if (!path.endsWith(File.separator)) {
+            return File.separator;
+        }else
+            return "";
+    }
+
 }
