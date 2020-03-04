@@ -38,6 +38,7 @@ public class PathHelper {
 
     /**
      * 需要夸平台测试
+     *
      * @param path
      * @return
      */
@@ -49,7 +50,7 @@ public class PathHelper {
         } else {
             throw new NotNormalPathException();
         }
-        return path+appendSeparatorIfNeed(path);
+        return path + appendSeparatorIfNeed(path);
     }
 
     static boolean isWinFileSystem(String path) {
@@ -77,14 +78,23 @@ public class PathHelper {
     static class NotNormalPathException extends Exception {
     }
 
-    private static String appendSeparatorIfNeed(String path) {
+    static String appendSeparatorIfNeed(String path) throws NotNormalPathException {
         if (path == null) {
-            return "";
+            throw new NotNormalPathException();
         }
-        if (!path.endsWith(File.separator)) {
-            return File.separator;
-        }else
-            return "";
+        if (isWinFileSystem(path)) {
+            if (!path.endsWith("\\")) {
+                return "\\";
+            } else
+                return "";
+        } else if (isUnixLikeFileSystem(path)) {
+            if (!path.endsWith("/")) {
+                return "/";
+            } else
+                return "";
+        } else throw new NotNormalPathException();
+
+
     }
 
 }

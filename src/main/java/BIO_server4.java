@@ -18,7 +18,7 @@ public class BIO_server4 {
 
     //todo 如果没有带参数，则接下来就进行参数输入要求。
     //校验输入，不能带引号。
-    public static void main(String[] args) throws ClassNotFoundException, IOException {
+    public static void main(String[] args) throws ClassNotFoundException, IOException, PathHelper.NotNormalPathException {
         userInputTips();
         Common.verifyArgs(args, " port pathToStoreFile  in sequence");
         turnArgsIntoField(args);
@@ -58,13 +58,14 @@ public class BIO_server4 {
      * @param directory
      * @return
      */
-    private static String receiveSizeAbsPath(String prePath, String directory) {
-        if (!prePath.endsWith("/")) {
-            prePath = prePath + "/";
-        }
+     static String receiveSizeAbsPath(String prePath, String directory) throws PathHelper.NotNormalPathException {
+         prePath += PathHelper.appendSeparatorIfNeed(prePath);
+         directory += PathHelper.appendSeparatorIfNeed(directory);
+         directory = PathHelper.transSeparatorToLocalFileSystem(directory);
+
+
         String s = prePath + directory;
-        s = s.replace("\\", "/");
-        System.out.println(s);
+         System.out.println("path to store in server" + s);
         return s;
     }
 
@@ -90,7 +91,7 @@ public class BIO_server4 {
         return s1 + s2 + s3;
     }
 
-    private static long spaceShipLanding(FilesSpaceShip ship) throws IOException {
+    private static long spaceShipLanding(FilesSpaceShip ship) throws IOException, PathHelper.NotNormalPathException {
         long fileSize = 0;
         for (SpaceShipPassenger fileSendedBySocket : ship.getFileSendedBySockets()) {
 
