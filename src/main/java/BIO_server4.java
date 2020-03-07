@@ -60,7 +60,7 @@ public class BIO_server4 {
      */
     static String receiveSideAbsPath(String prePath, String directory) throws PathHelper.NotNormalPathException {
         prePath += PathHelper.appendSeparatorIfNeed(prePath);
-        System.out.println("directory is " + directory);
+//        System.out.println("directory is " + directory);
         directory += PathHelper.appendSeparatorIfNeed(directory);
         directory = PathHelper.transSeparatorToLocalFileSystem(directory);
 
@@ -98,14 +98,12 @@ public class BIO_server4 {
 
             File file = new File(receiveSideAbsPath(to, fileSendedBySocket.getFilePath()));
 
-            System.out.println(file.getCanonicalPath() + "is dir " + fileSendedBySocket.isDirectory());
+//            System.out.println(file.getCanonicalPath() + "is dir " + fileSendedBySocket.isDirectory());
             if (fileSendedBySocket.isDirectory()) {
 //                System.err.println("hehehe=="+file.getCanonicalPath());
                 createEmptyDirIfNotExists(file.getCanonicalFile());
                 continue;
             }
-
-//            System.out.println(fileSendedBySocket.getFileData().length);
             createFileOrDirectoryIfNeed(file);
             FileOutputStream fileOutputStream = new FileOutputStream(file);
             fileOutputStream.write(fileSendedBySocket.getFileData());
@@ -138,7 +136,7 @@ public class BIO_server4 {
     private static boolean createEmptyDirIfNotExists(File file) throws IOException {
 //        if (file.isDirectory()&&!file.exists()) {////这句是他娘的坑爹
         boolean mkdir = file.mkdir();
-        System.out.println(mkdir + "hhh" + file.getCanonicalPath());
+//        System.out.println(mkdir + "hhh" + file.getCanonicalPath());
         return mkdir;
 //        }
 //        return false;

@@ -80,7 +80,7 @@ public class PathHelper {
 
 
     static String appendSeparatorIfNeed(String path) throws NotNormalPathException {
-        System.out.println("path is "+path);
+//        System.out.println("path is "+path);
         if (path == null) {
             throw new NotNormalPathException();
         }
