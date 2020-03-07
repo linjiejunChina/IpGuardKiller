@@ -99,10 +99,11 @@ public class BIO_Client4 {
     }
 
     static String getInterestFilePath(String originPath, String headOfPathToCutOff) {
-        if (!headOfPathToCutOff.endsWith(File.separator)) {
-            headOfPathToCutOff += File.separator;
+        String replace = originPath.replace(headOfPathToCutOff, "");
+        if (!replace.contains(File.separator)) {
+            replace = File.separator + replace;
         }
-        return originPath.replace(headOfPathToCutOff, "");
+        return replace;
     }
 
     private static void turnArgsIntoField(String[] args) {

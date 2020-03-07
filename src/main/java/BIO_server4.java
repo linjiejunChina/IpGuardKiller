@@ -58,15 +58,15 @@ public class BIO_server4 {
      * @param directory
      * @return
      */
-     static String receiveSizeAbsPath(String prePath, String directory) throws PathHelper.NotNormalPathException {
-         prePath += PathHelper.appendSeparatorIfNeed(prePath);
-         directory += PathHelper.appendSeparatorIfNeed(directory);
-         directory = PathHelper.transSeparatorToLocalFileSystem(directory);
-
+    static String receiveSideAbsPath(String prePath, String directory) throws PathHelper.NotNormalPathException {
+        prePath += PathHelper.appendSeparatorIfNeed(prePath);
+        System.out.println("directory is " + directory);
+        directory += PathHelper.appendSeparatorIfNeed(directory);
+        directory = PathHelper.transSeparatorToLocalFileSystem(directory);
 
 
         String s = prePath + PathHelper.cutSeparatorOfPathHead(directory);
-         System.out.println("path to store in server" + s);
+        System.out.println("path to store in server" + s);
         return s;
     }
 
@@ -96,7 +96,7 @@ public class BIO_server4 {
         long fileSize = 0;
         for (SpaceShipPassenger fileSendedBySocket : ship.getFileSendedBySockets()) {
 
-            File file = new File(receiveSizeAbsPath(to, fileSendedBySocket.getFilePath()));
+            File file = new File(receiveSideAbsPath(to, fileSendedBySocket.getFilePath()));
 
             System.out.println(file.getCanonicalPath() + "is dir " + fileSendedBySocket.isDirectory());
             if (fileSendedBySocket.isDirectory()) {
