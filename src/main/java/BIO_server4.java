@@ -129,10 +129,12 @@ public class BIO_server4 {
         return serverSocket.accept();
     }
 
-    private static void create_tmp_Dir4SvnNeed() {
-
-    }
-
+    /**
+     * 主要为了创建空的文件夹。
+     * @param file
+     * @return
+     * @throws IOException
+     */
     private static boolean createEmptyDirIfNotExists(File file) throws IOException {
 //        if (file.isDirectory()&&!file.exists()) {////这句是他娘的坑爹
         boolean mkdir = file.mkdir();
